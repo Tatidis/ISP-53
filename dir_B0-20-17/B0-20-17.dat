@@ -23,7 +23,7 @@
 
 #analyzer							!All paramters taken from the exersices. The parameters will be changed in accordance with the experimental setup of ISP-53.
 
-name = "Basic model of ISP-53"
+name = "B0-20-17"
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
@@ -41,7 +41,7 @@ pi = 4.*ATAN(1.)
 
 ! Meshing parameters
 
-	naxia = 5			! number of axial cells 
+	naxia = 36			! number of axial cells 
 	naxgrid = 1			! number of axial cells between grids. This parameter is run with a different option other than the one that uses naxia.
 	ndsca = 1			! 1 azimuthal structure per channel
 	nrods = 28			! this parameter includes: intact heated rods; ballooned heated rods; guide tubes
@@ -162,8 +162,8 @@ pi = 4.*ATAN(1.)
 !	agirdm = 30.deg			! angle of the mixing vanes
 	gthic = 0.4mm			! grid thickness
 
-	zgrid1 = zihrl2b + 195.mm  - 18.5mm 	! the middle elevation of the first holding grid
-	zgrid2 = zihrl2b + 717.mm  - 12.75mm 	! the middle elevation of the first grid with mixing vanes
+	zgrid1 = zihrl2b + 195.mm  - 18.5mm 	! the middle elevation of the first holding grid. 18.5mm is equal to hgridh/2.
+	zgrid2 = zihrl2b + 717.mm  - 12.75mm 	! the middle elevation of the first grid with mixing vanes. 12.75mm is equal to hgridm/2.
 	zgrid3 = zihrl2b + 1239.mm - 12.75mm 	! the middle elevation of the second grid with mixing vanes
 	zgrid4 = zihrl2b + 1761.mm - 12.75mm 	! the middle elevation of the third grid with mixing vanes
 	zgrid5 = zihrl2b + 2293.mm - 12.75mm 	! the middle elevation of the fourth grid with mixing vanes
@@ -182,35 +182,35 @@ pi = 4.*ATAN(1.)
 	cgap  = 'He'				! gap composition
 	pgap0 = 7.bar				! gap pressure (Pa)
 
-	twal0 = 280.C				! initial temperature of walls (K) 	! This value can be set to room temperature i.e. 300.C. It's set to 410.K because the system rapidly reaches that temp within a few seconds of initiation.
+	twal0 = 300.C				! initial temperature of walls (K) 	! This value can be set to room temperature i.e. 300.C.
 
-	pgas0 = 5.bar				! coolant gas pressure (Pa)
-	pgas_out = 3.bar			! outlet BC pressure
+	pgas0 = 20.bar				! coolant gas pressure (Pa)
+	pgas_out = 20.bar			! outlet BC pressure
 
 	tgas0 = 300.C				! coolant gas temperature (K)
 
 	tsat0 = MDBGET "H2O" "T_sat(P)" pgas0	! compute coolant saturation temperature with MDB (K)
-	tliq0 = 74.C
-	tgas = tliq0+60.
+	tliq0 = 192.C
+	tgas = tliq0+20.
 
 	tbct = 300.C				! external housing wall temperature (K)
 	hbct = 50000.W/m2/K			! external housing heat transfer coefficient (W/m2/K)
 
 	qgas = 150.g/s				! coolant gas flow rate
-	qliq = 269.g/s				! coolant liquid flow rate
+	qliq = 89.g/s				! coolant liquid flow rate
 
 ! Time
 	tini = 0.s				! initial time
-	tstep1 = 170.s				! the time at which the cladding of the central rod at central axial elevation reaches ~300.C simulating 
+	tstep1 = 7.s				! the time at which the cladding of the central rod at central axial elevation reaches ~300.C simulating 
 						! with 5 axial nodes. The elements are heated with dry steam which turn off when this time-stamp is 
 						! reached, and the shroud heating starts.
-	tstep2 = 895.s				! the time at which the shourd reaches ~500.C or ~775.K. This is the time-stamp when the rods' power are
+	tstep2 = 1081.s				! the time at which the shourd reaches ~500.C or ~775.K. This is the time-stamp when the rods' power are
 						! turned on.
-	tstep3 = 939.s				! the time at which the central rod of the bundle reaches ~550.C or 825.K. This is the time when the water
+	tstep3 = 1120.s				! the time at which the central rod of the bundle reaches ~550.C or 825.K. This is the time when the water
 						! injection system is turned on. The computational time greatly increases per in-code second. 
-	tstep4 = 1300.s				! this is when the heating of the shroud and rods  heating area turned off. The water injection system
+	tstep4 = 1500.s				! this is when the heating of the shroud and rods  heating area turned off. The water injection system
 						! turns off abour 60.s after this time-stamp.
-	tstep5 = 1500.s
+	tstep5 = 1605.s
 	tend  = tstep5				! final time
 	dtmin = 0.01s				! minimum macro time step
 	dtmax = 5.s				! maximum macro time step
@@ -218,9 +218,9 @@ pi = 4.*ATAN(1.)
 
 ! Power
 	pini = 0.				! initial power
-	pmax = 3300. 				! maximum power 
+	pmax = 2000. 				! maximum power 
 	
-	phouse = 0.*19200.W			! power of the internal housing
+	phouse = 20000.W			! power of the internal housing
 #end
 
 
@@ -370,7 +370,7 @@ STRU VESSEL
 		SC1 GRID 'GRID1' 'GRID2' 'GRID3' 'GRID4' 'GRID5' 'GRID6' TERM
 
 ! Housing declaration
-		SC1 SHROUD 'HOUSINGI' TERM
+		SC1 SHROUD 'HOUSINGI' 'INSUL' 'HOUSINGO' TERM
 
 	END
 
@@ -480,6 +480,29 @@ STRU VESSEL
 		SR1 YEXT (-thic)		(6.*p+2.*ph+thic)	(6.*p+2.*ph+thic)  TERM
 		SR1 DSCR 0. REGU 3 1. TERM
 	END
+        STRU MACR NAME 'INSUL' TYPG 'CYLINDER'
+                X 0.            Y 0.
+                MATE 'FFRAX'    MASF 1.
+                T 300.C                                                                                                                 !  the value (twal0) was changed to be the same as the housing BC
+                ZMIN (zcbot)    ZMAX (zctop)
+                SR1 XINT (toagap+agap)          (toagap+agap)           (-agap-ithic)           TERM
+                SR1 YINT (-agap-ithic)          (toagap+agap)           (toagap+agap)           TERM
+                SR1 XEXT (toagap+agap+ithic)    (toagap+agap+ithic)     (-thic-agap-ithic)      TERM
+                SR1 YEXT (-thic-agap-ithic)     (toagap+agap+ithic)     (toagap+agap+ithic)     TERM
+                SR1 DSCR 0. REGU 1 1. TERM
+        END
+        STRU MACR NAME 'HOUSINGO' TYPG 'CYLINDER'
+                X 0.            Y 0.
+                MATE 'IN718'    MASF 1.
+                T (twal0)
+                ZMIN (zcbot)    ZMAX (zctop)
+                SR1 XINT (toedge-ethic)                 (toedge-ethic)  (-agap-ithic-ethic-thic)        TERM
+                SR1 YINT (-agap-ithic-ethic-thic)       (toedge-ethic)  (toedge-ethic)                  TERM
+                SR1 XEXT (toedge)                       (toedge)        (-thic-agap-ithic-ethic)        TERM
+                SR1 YEXT (-thic-agap-ithic-ethic)       (toedge)        (toedge)                        TERM
+                SR1 DSCR 0. REGU 1 1. TERM
+        END
+
 
 ! Copies of intact heated rod layers' definitions
 	! Copies the definitions of the intact heated rods. ihrs is a vector containing the non-sequential intact heated rod ID number.
@@ -552,6 +575,8 @@ STRU VESSEL
 
 
 	STRU COND MACR 'HOUSINGI' MACR 'HOUSINGI' END
+	STRU COND MACR 'INSUL' MACR 'INSUL' END
+	STRU COND MACR 'HOUSINGO' MACR 'HOUSINGO' END
 
 ! CONDUCTION BETWEEN COMPONENTS IN CONTACT
 	(ii=0)
@@ -563,10 +588,13 @@ STRU VESSEL
 		STRU COND MACR (WORD('IHRL3-'//CHAR(ihrs[ii]))) FACE 'EXTERNAL' MACR (WORD('IHRL4-'//CHAR(ihrs[ii]))) FACE 'INTERNAL' END	
 	#enddo
 	
+	STRU COND MACR 'INSUL' FACE 'EXTERNAL' MACR 'HOUSINGO' FACE 'INTERNAL' END
 
 ! Gas gap heat transfer
 	STRU GAP MACR 'GTCO1' FACE 'EXTERNAL' MACR 'GTCL1' FACE 'INTERNAL' GAS 'H2O' PP (pgas0) END
 	STRU GAP MACR 'GTCO2' FACE 'EXTERNAL' MACR 'GTCL2' FACE 'INTERNAL' GAS 'H2O' PP (pgas0) END
+
+	STRU GAP MACR 'HOUSINGI' FACE 'EXTERNAL' MACR 'INSUL' FACE 'INTERNAL' GAS 'N2' PP 1.bar END
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !		END CONDUCTION
@@ -618,7 +646,7 @@ STRU VESSEL
 			SR1 POWE
 				0.s		0.W					! There are 49 rods in the bundle, three of them are guide tubes, therefore we divide by 46.
 				(tstep2)	0.W					! There are 7 half rods - 6 half intact (or ballooned) heated rods - and one half guide tube
-				(tstep2+1.)	(pmax)					! in the diagonal. Resulting in nrods-8 powered full rods in the assembly.
+				(tstep2+8.)	(pmax)					! in the diagonal. Resulting in nrods-8 powered full rods in the assembly.
 				(tstep4+60.s)	(pmax)
 				(tstep4+61.s)	0.W
 			TERM
@@ -662,7 +690,7 @@ STRU VESSEL
 			SR1 POWE
 				0.		0.W
 				(tstep2)	0.W				! There are 6 half intact (or ballooned) heated rods in the diagonal
-				(tstep2+1.)     (pmax/2.)
+				(tstep2+8.)    (pmax/2.)
 				(tstep4+60.s)   (pmax/2.)
 				(tstep4+61.s)   0.W
 			TERM
@@ -709,8 +737,8 @@ STRU VESSEL
 		SR1 FACT 1. TERM
 		SR1 POWE
 			0.s		0.W
-			(tstep1-1.)	0.W
-			(tstep1)	(phouse)
+			(tstep1)	0.W
+			(tstep1+8.)	(phouse)
 			(tend)		(phouse)
 
 		TERM
@@ -767,8 +795,8 @@ STRU CONNECTI
 	TERM
 	SR1 q_m_liq
 	        (tini)		0.
-		(tstep3-1.)	0.
-	        (tstep3)	(qliq)				! According to the ISP-53 Specs, there is a spike far larger than qliq for a few seconds when the water injection commences.
+		(tstep3)	0.
+	        (tstep3+12.)	(qliq)				! According to the ISP-53 Specs, there is a spike far larger than qliq for a few seconds when the water injection commences.
 	        (tend)		(qliq)				! TODO. model this behaviour to see if this phenomenon is necessary to describe the system.
 	TERM
 	P	(pgas0)
@@ -811,11 +839,11 @@ STRU CONNECTI
 	FROM 'VESSEL'
 	TO   'USER'
 	STAT 'ON'
-	MACR 'HOUSINGI'
+	MACR 'HOUSINGO'
 	FACE 'EXTERNAL'
-	CALL './TSHROUD_TIMP_B0-03-50'
-	CALL './TSHROUD_INST_B0-03-50'
-	CALL './TSHROUD_H_B0-03-50'
+	CALL './TSHROUD_TIMP_B0-20-17'
+	CALL './TSHROUD_INST_B0-20-17'
+	CALL './TSHROUD_H_test'
 	Z    1.6m
 END
 
@@ -981,6 +1009,7 @@ STRU VISU
 	TITL "Temperature evolution"
 	TIT2 " (1.6m , 45deg)"
 	STIT "COAL Experiment"
+	XMIN 0.		XMAX (tend)
 	LABX "time (s)" LABY "T (K)"
 	STRU VARI NAME 'T_IRL425' VARI 'T' MACR 'IHRL4-25' ELEV 1.6m ANGL (pi/4.)
 		FILEPATH "compvar.path"
@@ -989,6 +1018,9 @@ STRU VISU
 		FILEPATH "compvar.path"
 	END
 	STRU VARI NAME 'T_SHR_i' VARI 'T' MACR 'HOUSINGI' ELEV 1.6m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'T_SHR_o' VARI 'T' MACR 'HOUSINGO' ELEV 1.6m ANGL (pi/4.)
 		FILEPATH "compvar.path"
 	END
 	SFIL (name//"-"//"-temp-evol")
@@ -1003,6 +1035,7 @@ STRU VISU
 	TITL "Temperature evolution FoM "
 	TIT2 " (1.55m , 45deg)"
 	STIT "COAL Experiment"
+	XMIN 0.		XMAX (tend)
 	LABX "time (s)" LABY "T (K)"
 	STRU VARI NAME 'T_IHL410' VARI 'T' MACR 'IHRL4-10' ELEV 1.55m ANGL (pi/4.)
 		FILEPATH "compvar.path"
@@ -1045,6 +1078,7 @@ STRU VISU
 	TITL "Quench front evolution"
 	TIT2 "Clad IHRL4-25 (45deg)"
 	STIT "COAL Experiment"
+	XMIN (tini) XMAX (tend)
 	LABX "time (s)" LABY "Z (m)"
 	YMIN (zcbot) YMAX (zctop)
 	STRU VARI NAME 'IHRL4-25' PATH "BASE:'VESSEL':'CONV' 'MACR' 'IHRL4-25':'CHANWALL':'ZQF'" END
