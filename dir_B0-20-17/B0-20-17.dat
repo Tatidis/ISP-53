@@ -41,7 +41,7 @@ pi = 4.*ATAN(1.)
 
 ! Meshing parameters
 
-	naxia = 36			! number of axial cells 
+	naxia = 30			! number of axial cells 
 	naxgrid = 1			! number of axial cells between grids. This parameter is run with a different option other than the one that uses naxia.
 	ndsca = 1			! 1 azimuthal structure per channel
 	nrods = 28			! this parameter includes: intact heated rods; ballooned heated rods; guide tubes
@@ -74,28 +74,28 @@ pi = 4.*ATAN(1.)
 ! Intact heated rod layer 1         ! boron nitride core	"Intact heated rod" is abbreviated to "ihr"
 	dihr1 = 0.mm                ! boron nitride center of the intact heated rods
 	dihr2 = 3.58mm              ! boron nitride edge of the intact heated rods
-	hihrl1 = 3000.mm            ! length of boron nitride core
+	hihrl1 = 3300.mm            ! length of boron nitride core
 	zihrl1b = 0.mm              ! lower elevation of boron nitride core
 	zihrl1t = zihrl1b+hihrl1    ! upper elevation of boron nitride core
 
 ! Intact heated rod layer 2         ! annealed seemless tubing
 	! dihr2                     ! internal diameter of tubing
 	dihr3 = 4.65mm              ! external diameter of tubing
-	hihrl2 = 3000.mm            ! tubing total length
+	hihrl2 = 3300.mm            ! tubing total length
 	zihrl2b = 0.mm              ! lower elevation of tubing
 	zihrl2t = zihrl2b+hihrl2    ! upper elevation of tubing
 
 ! Intact heated rod layer 3         ! boron nitride sleave
 	! dihr3                     ! internal diameter of boron nitride sleave
 	dihr4 = 8.23mm              ! external diameter of boron nitride sleave
-	hihrl3 = 3000.mm            ! tubing total length
+	hihrl3 = 3300.mm            ! tubing total length
 	zihrl3b = 0.mm              ! lower elevation of tubing
 	zihrl3t = zihrl3b+hihrl3    ! upper elevation of tubing
 
 ! Intact heated rod layer 4         ! hastelloy C-22 sheath
 	! dihr4                     ! internal diameter of hastelloy cladding
 	dihr5 = 9.50mm              ! external diameter of the intact heated rod	+-0.1mm
-	hihrl4 = 3000.mm            ! length of the external cladding
+	hihrl4 = 3300.mm            ! length of the external cladding
 	zihrl4b = 0.mm              ! lower elevation of the intact heated rod
 	zihrl4t = zihrl4b+hihrl4    ! upper elevation of the intact heated rod
 
@@ -109,7 +109,7 @@ pi = 4.*ATAN(1.)
 	dbhr3 = dihr3			! internal diameter of the third layer filled with boron nitride
 	dbhr4 = dihr4			! external diameter of the non-deformed part of the third layer filled with boron nitride
 	ddeformi = 11.6mm		! inside distance or width of the square shaped ballooned rod
-	hbhrl3 = 3000.mm			! length of the third layer
+	hbhrl3 = 3300.mm			! length of the third layer
 	zbhr3b = 0.mm			! lower elevation of the ballooned heated rod
 	zbhr3t = zbhr3b+hbhrl3		! upper elevation of the ballooned heated rod
 
@@ -117,7 +117,7 @@ pi = 4.*ATAN(1.)
 	! dbhr4 			! internal diameter of the non-deformed part of the fourth layer
 	dbhr5 = dihr5			! external diameter of the non-deformed part of the fourth layer
 	ddeformo = 12.6mm		! outside distance or width of the square shaped ballooned rod
-	hbhrl4 = 3000.mm		! length of the third layer
+	hbhrl4 = 3300.mm		! length of the third layer
 	zbhr4b = 0.mm			! lower elevation of the ballooned heated rod
 	zbhr4t = zbhr4b+hbhrl4		! upper elevation of the ballooned heated rod
 
@@ -145,8 +145,8 @@ pi = 4.*ATAN(1.)
 ! Guide tube core			! solid core of guide tube	"Guide tube core" is abbreviated as "gtco"
 	dgtco1 = 0.mm			! guide tube core internal diameter
 	dgtco2 = 9.5mm			! guide tube core external diameter
-	hgtco = 4250.mm			! length of guide tube core
-	zgtcob = -475.mm		! lower elevation of guide tube core
+	hgtco = 3300.mm			! changed from 4250.mm ! length of guide tube core
+	zgtcob = 0.mm			! changed from -475.mm! lower elevation of guide tube core
 	zgtcot = zgtcob+hgtco		! upper elevation of guide tube core
 
 ! Guide tube cladding			! guide tube cladding		!Guide tube cladding is abbreviated as "gtcl"
@@ -263,7 +263,7 @@ END
 !		BEGIN MDB
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-CALL './mISP_53.mdb'									! IMPORTANT: Make sure that MDB.dat is in the same folder.
+CALL '../../mISP_53.mdb'									! IMPORTANT: Make sure that MDB.dat is in the same folder.
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !		END MDB
@@ -610,20 +610,6 @@ STRU VESSEL
 		STRU CONV MACR (WORD('IHRL4-'//CHAR(ihrs[ii]))) FACE 'EXTERNAL' END				! Defines the folloing line: STRU CONV MACR 'IHRL4-1' FACE 'EXTERNAL' END
 	#enddo	
 
-	STRU CONV MACR 'GTCL1' FACE 'EXTERNAL' END
-	STRU CONV MACR 'GTCL1' FACE 'INTERNAL' END								! Convection is added inside the guide tube due to it being perforated.
-	STRU CONV MACR 'GTCO1' FACE 'EXTERNAL' END								! Therefore, there will be water flowing in-between the guidetube core	
-	STRU CONV MACR 'GTCL2' FACE 'EXTERNAL' END								! and the guidetube cladding. The examples available with the DRACCAR
-	STRU CONV MACR 'GTCL2' FACE 'INTERNAL' END								! install files that model guide rods do not include any CONV STRU inside
-	STRU CONV MACR 'GTCO2' FACE 'EXTERNAL' END								! of the cladding a. It is not clear whether these rods are intended to
-														! be perforated.
-	STRU CONV MACR 'GRID1' FACE 'EXTERNAL' END
-	STRU CONV MACR 'GRID2' FACE 'EXTERNAL' END
-	STRU CONV MACR 'GRID3' FACE 'EXTERNAL' END
-	STRU CONV MACR 'GRID4' FACE 'EXTERNAL' END
-	STRU CONV MACR 'GRID5' FACE 'EXTERNAL' END
-	STRU CONV MACR 'GRID6' FACE 'EXTERNAL' END
-
 	STRU CONV MACR 'HOUSINGI' FACE 'INTERNAL' END
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -738,8 +724,8 @@ STRU VESSEL
 		SR1 POWE
 			0.s		0.W
 			(tstep1)	0.W
-			(tstep1+8.)	(phouse)
-			(tend)		(phouse)
+			(tstep1+8.)	(phouse*0.5)
+			(tend)		(phouse*0.5)
 
 		TERM
 		SC1 MACR 'HOUSINGI' TERM
@@ -843,7 +829,7 @@ STRU CONNECTI
 	FACE 'EXTERNAL'
 	CALL './TSHROUD_TIMP_B0-20-17'
 	CALL './TSHROUD_INST_B0-20-17'
-	CALL './TSHROUD_H_test'
+	CALL './TSHROUD_H_B0-20-17'
 	Z    1.6m
 END
 
@@ -1011,7 +997,7 @@ STRU VISU
 	STIT "COAL Experiment"
 	XMIN 0.		XMAX (tend)
 	LABX "time (s)" LABY "T (K)"
-	STRU VARI NAME 'T_IRL425' VARI 'T' MACR 'IHRL4-25' ELEV 1.6m ANGL (pi/4.)
+	STRU VARI NAME 'T_IHL425' VARI 'T' MACR 'IHRL4-25' ELEV 1.6m ANGL (pi/4.)
 		FILEPATH "compvar.path"
 	END
 	STRU VARI NAME 'T_IHL419' VARI 'T' MACR 'IHRL4-19' ELEV 1.6m ANGL (pi/4.)
