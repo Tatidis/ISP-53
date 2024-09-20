@@ -1,30 +1,25 @@
 !
 !
-! 
+! There are no rods in the edges i.e. there are no rods on the nodes 1 through 9 or 17, 24, 30, 35, 39, 42, 44, 45.
 ! This input is taken from ~/DRACCAR/2024_beta/draccar/test/tcs/bundle_17x17/bundle_17x17.dat
 ! 
-!    97¤¤¤¤¤¤¤¤¤¤96¤¤¤¤95¤¤¤¤94¤¤¤¤93¤¤¤¤92¤¤¤¤91¤¤¤¤90¤¤¤¤¤¤¤¤¤¤89
-!    ¤  79        ¤ 78  ¤ 77  ¤ 76  ¤ 75  ¤ 74  ¤ 73  ¤       72  ¤
-!    ¤      1---- 2---- 3---- 4---- 5---- 6---- 7---- 8---- 9     ¤
-!    ¤      |  8  | 16  | 24  | 32  | 40  | 48  | 56  | 64  |     ¤
-!    98¤¤¤¤¤10---11----12----13----14----15----16----17----18¤¤¤¤88
-!    ¤  80  |  7  | 15  | 23  | 31  | 39  | 47  | 55  | 63  | 71  ¤
-!    99¤¤¤¤¤19---20----21----22----23----24----25----26----27¤¤¤¤87
-!    ¤  81  |  6  | 14  | 22  | 30  | 38  | 46  | 54  | 62  | 70  ¤
-!    100¤¤¤¤28---29----30----31----32----33----34----35----36¤¤¤¤86
-!    ¤  82  |  5  | 13  | 21  | 29  | 37  | 45  | 53  | 61  | 69  ¤
-!    101¤¤¤¤37---38----39----40----41----42----43----44----45¤¤¤¤85
-!    ¤  83  |  4  | 12  | 20  | 28  | 36  | 44  | 52  | 60  | 68  ¤
-!    102¤¤¤¤46---47----48----49----50----51----52----53----54¤¤¤¤84
-!    ¤  84  |  3  | 11  | 19  | 27  | 35  | 43  | 51  | 59  | 67  ¤
-!    103¤¤¤¤55---56----57----58----59----60----61----62----63¤¤¤¤83
-!    ¤  85  |  2  | 10  | 18  | 26  | 34  | 42  | 50  | 58  | 66  ¤
-!    104¤¤¤¤64---65----66----67----68----69----70----71----72¤¤¤¤82
-!    ¤      |  1  |  9  | 17  | 25  | 33  | 41  | 49  | 57  |     ¤
-!    ¤      73---74----75----76----77----78----79----80----81     ¤
-!    ¤            ¤ 87  ¤ 88  ¤ 89  ¤ 90  ¤ 91  ¤ 92  ¤       65  ¤
-!    105¤¤¤¤¤¤¤¤106¤¤¤107¤¤¤108¤¤¤109¤¤¤110¤¤¤111¤¤¤112¤¤¤¤¤¤¤¤¤113
-!
+!    1---- 2---- 3---- 4---- 5---- 6---- 7---- 8---- 9
+!       1  |  3  |  6  | 10  | 15  | 21  | 28  | 36  |
+!         10----11----12----13----14----15----16----17
+!             2  |  5  |  9  | 14  | 20  | 27  | 35  |
+!               18----19----20----21----22----23----24
+!                   4  |  8  | 13  | 19  | 26  | 34  |
+!                     25----26----27----28----29----30
+!                         7  | 12  | 18  | 25  | 33  |
+!                           31----32----33----34----35
+!                              11  | 17  | 24  | 32  |
+!                                 36----37----38----39
+!                                    16  | 23  | 31  |
+!                                       40----41----42
+!                                          22  | 30  |
+!                                             43----44
+!                                                29  |
+!                                                   45
 
 #analyzer							!All paramters taken from the exersices. The parameters will be changed in accordance with the experimental setup of ISP-53.
 
@@ -32,11 +27,11 @@ name = "B0-20-17"
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
-! number of heated rods = 46
-! number of guide tubes = 3
+! number of heated rods = 26
+! number of guide tubes = 2
 ! number of grids = 6
-! number of nodes = 81
-! number of channels = 64
+! number of nodes = 45
+! number of channels = 36
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -46,20 +41,20 @@ pi = 4.*ATAN(1.)
 
 ! Meshing parameters
 
-	naxia = 10			! number of axial cells 
+	naxia = 8			! number of axial cells 
 	naxgrid = 1			! number of axial cells between grids. This parameter is run with a different option other than the one that uses naxia.
 	ndsca = 1			! 1 azimuthal structure per channel
-	nrods = 46			! this parameter includes: intact heated rods; ballooned heated rods; guide tubes
+	nrods = 28			! this parameter includes: intact heated rods; ballooned heated rods; guide tubes
+	nbrods = 10			! the of the fuel rods are ballooned rods
 	ngrids = 6			! the number of grids
-	nchannels = 64
+	nchannels = 36
+	mechmesh = 12			! mechanical meshing cells in creep model
 
 ! Vector parameters
-	ihrs = SI1  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19    21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37    39 40    42 43 44 45 46 47 48 49 TERM		! intact heated rod ID number
-
-	ihrn = SI1 11 12 13 14 15 16 17 20 21 22 23 24 25 26 29 30 31 32 33    35 38 39 40 41 42 43 44 47 48 49 50 51 52 53 56 57    59 60    62 65 66 67 68 69 70 71 TERM		! intact heated rod node position. 
-
-	gts = SI1                                                           20                                                    38       41                         TERM		! guide tube ID number
-	gtn = SI1                                                           34                                                    58       61                         TERM		! guide tube node position.
+	ihrs = SI1  1  2  3  4  5  6  7  9 10 11 12 13 14 17 18 19 21 25 26 27 28 33 34 35 42 49 TERM		! intact heated rod ID number
+	ihrfull=SI1    2  3  4  5  6  7    10 11 12 13 14    18 19 21    26 27 28    34 35 42    TERM		! full intact heated rods. This parameter is used to set the power of the rods
+	ihrhalf=SI1 1                    9                17          25          33          49 TERM		! half intact heated rods.
+	ihrn = SI1 10 11 12 13 14 15 16 18 19 20 21 22 23 25 26 27 29 31 32 33 34 36 37 38 41 43 TERM		! intact heated rod node position. The array index of this vector corresponds to the array index of the ihrs vector
 
 ! Geometrical parameters
 
@@ -67,16 +62,14 @@ pi = 4.*ATAN(1.)
 	p = pitch
 	ph = 9.25mm		    ! center of edge rod to the internal wall of the housing
 	thic = 4.76mm               ! thickness of the inner housing
-	toagap = 51.81mm            ! toagap = 3.*p +ph+thic
+	toagap = 98.86mm            ! toagap = 6.*p +2.*ph+thic
 	agap = 3.mm                 ! air gap between the inner housing and the thermal insulation
 	ithic = 8.mm                ! insulation thickness
 	ethic = 3.18mm              ! outer housing thickness
-	toedge = 2*toagap+agap+ithic+ethic -thic ! distance to the outer edge of the outer housing from the inner edge of the inner shroud
-	toedgec = toagap+agap+ithic+ethic	 ! distance from the center of the bundle to the outer edge of the outer shroud
-	tomidc = 3.*p+ph+thic*0.5		 ! distance from the center of the bundle to the middle of the inner shroud
+	toedge = toagap+agap+ithic+ethic ! distance to the outer edge of the outer housing
 
 	psqrt2= pitch*SQRT(2.)
-	eps = toedgec*0.01
+	eps = toedge*0.01
 
 ! Intact heated rod layer 1         ! boron nitride core	"Intact heated rod" is abbreviated to "ihr"
 	dihr1 = 0.mm                ! boron nitride center of the intact heated rods
@@ -203,8 +196,8 @@ pi = 4.*ATAN(1.)
 	tbct = 300.C				! external housing wall temperature (K)
 	hbct = 50000.W/m2/K			! external housing heat transfer coefficient (W/m2/K)
 
-	qgas = 150.g/s				! coolant gas flow rate
-	qliq = 89.g/s				! coolant liquid flow rate
+	qgas = 0.5*150.g/s				! coolant gas flow rate
+	qliq = 0.5*89.g/s				! coolant liquid flow rate
 
 ! Time
 	tini = 0.s				! initial time
@@ -289,6 +282,8 @@ STRU VESSEL
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	STRU DISC
+		XSYM (3.*p+ph)	YSYM (3.*p+ph)
+		TSYM (-pi/4.)	CSYM 1
 		TYPE 'XYZ'
 		SR1 AXIA (zcbot) REGU (naxia) (zctop) TERM				! Creates axial meshing from the bottom of the cladding to the top in naxia regular meshes (evenly distributed).
 %
@@ -313,72 +308,54 @@ STRU VESSEL
 				REGU (naxgrid)	(zctop)
 		TERM
 %
+		SI1 EDGENUMB 1 3   1 3   1 4   1 3   2 4   1 3   3 4   1 3		! Creates channels in the channel formations seen in the schematic above.
+                             4 4   1 3   5 4   1 3   6 4   1 3   7 4    		
+!	                     4 4   1 3   5 4   1 3   6 4   1 3   6 4   2 3		! This line creates two triangular last cells; originaly it was defined as the line above.
 
-		SI1 EDGENUMB 64 4 
-				1 6
-				6 4
-				1 6
-				6 4
-				1 6
-				6 4
-				1 6
-				6 4
 		TERM
 
-		SI1 CHANEDGE 
-				73 74 65 64 	64 65 56 55	55 56 47 46	46 47 38 37	37 38 29 28	28 29 20 19	19 20 11 10	10 11 2 1
-				74 75 66 65	65 66 57 56	56 57 48 47	47 48 39 38	38 39 30 29	29 30 21 20	20 21 12 11	11 12 3 2
-				75 76 67 66	66 67 58 57	57 58 49 48	48 49 40 39	39 40 31 30	30 31 22 21	21 22 13 12	12 13 4 3
-				76 77 68 67	67 68 59 58	58 59 50 49	49 50 41 40	40 41 32 31	31 32 23 22	22 23 14 13	13 14 5 4
-				77 78 69 68	68 69 60 59	59 60 51 50	50 51 42 41	41 42 33 32	32 33 24 23	23 24 15 14	14 15 6 5
-				78 79 70 69	69 70 61 60	60 61 52 51	51 52 43 42	42 43 34 33	33 34 25 24	24 25 16 15	15 16 7 6
-				79 80 71 70	70 71 62 61	61 62 53 52	52 53 44 43	43 44 35 34	34 35 26 25	25 26 17 16	16 17 8 7
-				80 81 72 71	71 72 63 62	62 63 54 53	53 54 45 44	44 45 36 35	35 36 27 26	26 27 18 17	17 18 9 8
+		SI1 CHANEDGE 1 10  2	   10 18 11	10 11  3  2	   18 25 19
+                         18 19 12 11    11 12  4  3	   25 31 26	25 26 20 19
+                         19 20 13 12	12 13  5  4	   31 36 32	31 32 27 26
+                         26 27 21 20	20 21 14 13	13 14  6  5	   36 40 37
+                         36 37 33 32	32 33 28 27	27 28 22 21	21 22 15 14
+                         14 15  7  6	   40 43 41	40 41 38 37	37 38 34 33
+                         33 34 29 28	28 29 23 22	22 23 16 15	15 16  8  7
+                            43 45 44	43 44 42 41	41 42 39 38	38 39 35 34
+			 34 35 30 29	29 30 24 23	23 24 17 16	16 17  9  8
+!                        34 35 30 29	29 30 24 23	23 24 17 16	16 17  9	8  9 16			! This line is inserted to create two triangular cells as the last two cells. If this line is used, remember to increment nchannels.
+														
 
-				112 113 82 72 81 80 
-				72 82 83 63	63 83 84 54	54 84 85 45	45 85 86 36	36 86 87 27	27 87 88 18
-				18 88 89 90 8 9
-				 7  8 90 91	 6  7 91 92	 5  6 92 93	 4  5 93 94	 3  4 94 95	 2  3 95 96
-				 1  2 96 97 98 10
-				99 19 10 98	100 28 19 99	101 37 28 100	102 46 37 101	103 55 46 102	104 64 55 103
-				105 106 74 73 64 104
-				106 107 75 74	107 108 76 75	108 109 77 76	109 110 78 77	110 111 79 78	111 112 80 79
 		TERM
 
-
-                SR1 X 	(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc)
-			(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc)
-			(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc)
-			(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc)
-			(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc)
-			(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc)
-			(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc)
-			(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc) 
-			(-tomidc) (-3.*p) (-2.*p) (-1.*p) (0.*p) (1.*p) (2.*p) (3.*p) (tomidc) 
-
-			               	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	               	( toedgec+eps)
-			         	( 3.*p) 	( 2.*p) 	( 1.*p) 	(0.*p) 		(-1.*p) 	(-2.*p) 	(-3.*p) 	          	(-toedgec-eps)
-			              	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	              	(-toedgec-eps)
-			         	(-3.*p) 	(-2.*p) 	(-1.*p) 	(0.*p) 		( 1.*p) 	( 2.*p) 	( 3.*p) 	          	( toedgec+eps)
+                SR1 X (-thic-agap-ithic-ethic-eps) (ph) (1.*p+ph) (2.*p+ph) (3.*p+ph) (4.*p+ph) (5.*p+ph) (6.*p+ph) (toedge+eps)
+                                                   (ph) (1.*p+ph) (2.*p+ph) (3.*p+ph) (4.*p+ph) (5.*p+ph) (6.*p+ph) (toedge+eps)
+                                                        (1.*p+ph) (2.*p+ph) (3.*p+ph) (4.*p+ph) (5.*p+ph) (6.*p+ph) (toedge+eps)
+                                                                  (2.*p+ph) (3.*p+ph) (4.*p+ph) (5.*p+ph) (6.*p+ph) (toedge+eps)
+                                                                            (3.*p+ph) (4.*p+ph) (5.*p+ph) (6.*p+ph) (toedge+eps)
+                                                                                      (4.*p+ph) (5.*p+ph) (6.*p+ph) (toedge+eps)
+                                                                                                (5.*p+ph) (6.*p+ph) (toedge+eps)
+                                                                                                          (6.*p+ph) (toedge+eps)
+                                                                                                                    (toedge+eps)
 		TERM
 
 
-                SR1 Y 	( tomidc)	( tomidc)	( tomidc)	( tomidc) 	( tomidc) 	( tomidc) 	( tomidc) 	( tomidc) 	( tomidc)
-			( 3.*p) 	( 3.*p)		( 3.*p)		( 3.*p)		( 3.*p)		( 3.*p)		( 3.*p)		( 3.*p)		( 3.*p)
-			( 2.*p) 	( 2.*p)		( 2.*p)		( 2.*p)		( 2.*p)		( 2.*p)		( 2.*p)		( 2.*p)		( 2.*p)
-			( 1.*p) 	( 1.*p)     	( 1.*p)		( 1.*p)		( 1.*p)		( 1.*p)		( 1.*p)		( 1.*p)		( 1.*p)
-			( 0.*p) 	( 0.*p)  	( 0.*p)      	( 0.*p)		( 0.*p)		( 0.*p)		( 0.*p)  	( 0.*p)		( 0.*p)
-			(-1.*p) 	(-1.*p)     	(-1.*p)		(-1.*p)		(-1.*p)		(-1.*p)		(-1.*p)		(-1.*p)		(-1.*p)
-			(-2.*p) 	(-2.*p)     	(-2.*p)		(-2.*p)		(-2.*p)		(-2.*p)		(-2.*p)		(-2.*p)		(-2.*p)
-			(-3.*p) 	(-3.*p)     	(-3.*p)		(-3.*p)		(-3.*p)		(-3.*p)		(-3.*p)		(-3.*p)		(-3.*p)		
-			(-tomidc)	(-tomidc)	(-tomidc)	(-tomidc) 	(-tomidc) 	(-tomidc) 	(-tomidc) 	(-tomidc) 	(-tomidc)	
+                SR1 Y (toedge+eps) (toedge+eps) (toedge+eps) (toedge+eps) (toedge+eps) (toedge+eps) (toedge+eps) (toedge+eps) (toedge+eps)
+                                            (6.*p+ph) (6.*p+ph) (6.*p+ph) (6.*p+ph) (6.*p+ph) (6.*p+ph) (6.*p+ph) (6.*p+ph)
+                                                      (5.*p+ph) (5.*p+ph) (5.*p+ph) (5.*p+ph) (5.*p+ph) (5.*p+ph) (5.*p+ph)
+                                                                (4.*p+ph) (4.*p+ph) (4.*p+ph) (4.*p+ph) (4.*p+ph) (4.*p+ph)
+                                                                          (3.*p+ph) (3.*p+ph) (3.*p+ph) (3.*p+ph) (3.*p+ph)
+                                                                                    (2.*p+ph) (2.*p+ph) (2.*p+ph) (2.*p+ph)
+                                                                                              (1.*p+ph) (1.*p+ph) (1.*p+ph)
+                                                                                                             (ph)      (ph)
+                                                                                               (-thic-agap-ithic-ethic-eps)
+                TERM
 
-			         	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		         	( toedgec+eps)
-			              	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	( toedgec+eps) 	               	( toedgec+eps)
-			         	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p)		(-1.*p)		(-2.*p)		(-3.*p)		         	(-toedgec-eps)
-			              	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	(-toedgec-eps)	              	(-toedgec-eps)
-		TERM
- 
+
+!		(x=GLOBAL : 'VESSEL' : 'DISC' : 'X')					! unsure what this or the lone below does.
+!		(y=GLOBAL : 'VESSEL' : 'DISC' : 'Y')
+
+
 ! Intact heated rods declarations
 		(ii=0)	
 		#do
@@ -388,21 +365,14 @@ STRU VESSEL
 		#enddo	
 
 ! Guide tube declarations
-	! GTCO = "Guide tube core"; GTCL = "Guide tube cladding"
-
-		(ii=0)	
-		#do
-			(ii=ii+1)
-			#if (ii > SIZE(gts)) #exit
-			SC1 ROD ('GTCO-'//CHAR(gts[ii])) ('GTCL-'//CHAR(gts[ii])) TERM
-		#enddo	
+		SC1 ROD 'GTCO1' 'GTCL1' TERM						! GTCO = "Guide tube core"; GTCL = "Guide tube cladding"
+		SC1 ROD 'GTCO2' 'GTCL2' TERM
 
 ! Grid declarations - holding and mixing
-!		SC1 GRID 'GRID1' 'GRID2' 'GRID3' 'GRID4' 'GRID5' 'GRID6' TERM
+		SC1 GRID 'GRID1' 'GRID2' 'GRID3' 'GRID4' 'GRID5' 'GRID6' TERM
 
 ! Housing declaration
-		SC1 SHROUD 'HOUSINGI' TERM
-		SC1 SHROUD 'INSUL' 'HOUSINGO' TERM
+		SC1 SHROUD 'HOUSINGI' 'INSUL' 'HOUSINGO' TERM
 
 	END
 
@@ -461,107 +431,80 @@ STRU VESSEL
 	END
 
 ! Guide tube definitions
-	(ii=0)	
-	#do
-		(ii=ii+1)
-		#if (ii > SIZE(gts)) #exit
-		STRU MACR
-			NAME (WORD('GTCO-'//CHAR(gts[ii])))
-			TYPG 'CYLINDER'
-			DSCA 1
-			SR1 DSCR 0. 0.5 1. TERM
-			ZMIN (zgtcob)	ZMAX (zgtcot)
-			DINT (dgtco1)	DEXT (dgtco2)
-			MATE 'IN600'	MASF 1.
-			NODE (gtn[ii])
-			T (twal0)
-		END
-		STRU MACR
-			NAME (WORD('GTCL-'//CHAR(gts[ii])))
-			TYPG 'CYLINDER'
-			DSCA 1
-			SR1 DSCR 0. 1. TERM
-			ZMIN (zgtclb)	ZMAX (zgtclt)
-			DINT (dgtcl1)	DEXT (dgtcl2)
-			MATE 'IN600'	MASF 1.
-			NODE (gtn[ii])
-			T (twal0)
-		END
-	#enddo
+	STRU MACR
+		NAME 'GTCO1'
+		TYPG 'CYLINDER'
+		DSCA 1
+		SR1 DSCR 0. 0.5 1. TERM
+		ZMIN (zgtcob)	ZMAX (zgtcot)
+		DINT (dgtco1)	DEXT (dgtco2)
+		MATE 'IN600'	MASF 1.
+		NODE 28
+		T (twal0)
+	END
+	STRU MACR
+		NAME 'GTCL1'
+		TYPG 'CYLINDER'
+		DSCA 1
+		SR1 DSCR 0. 1. TERM
+		ZMIN (zgtclb)	ZMAX (zgtclt)
+		DINT (dgtcl1)	DEXT (dgtcl2)
+		MATE 'IN600'	MASF 1.
+		NODE 28
+		T (twal0)
+	END
+	STRU MACR NAME 'GTCO2' COPY 'GTCO1' NODE 40 END
+	STRU MACR NAME 'GTCL2' COPY 'GTCL1' NODE 40 END
 
 ! Grid definitions
-!	STRU MACR NAME 'GRID1' TYPG 'GRID'
-!		MATE 'IN600'	MASF 1.
-!		T (twal0)
-!		PERI (4.*pitch)	THIC (gthic)
-!		HEIG (hgridh)	Z (zgrid1)
-!	END
-!
-!	STRU MACR NAME 'GRID2' COPY 'GRID1' Z (zgrid2) HEIG (hgridm) END
-!	STRU MACR NAME 'GRID3' COPY 'GRID1' Z (zgrid3) HEIG (hgridm) END
-!	STRU MACR NAME 'GRID4' COPY 'GRID1' Z (zgrid4) HEIG (hgridm) END
-!	STRU MACR NAME 'GRID5' COPY 'GRID1' Z (zgrid5) HEIG (hgridm) END
-!	STRU MACR NAME 'GRID6' COPY 'GRID1' Z (zgrid6) END
+	STRU MACR NAME 'GRID1' TYPG 'GRID'
+		MATE 'IN600'	MASF 1.
+		T (twal0)
+		PERI (4.*pitch)	THIC (gthic)
+		HEIG (hgridh)	Z (zgrid1)
+	END
+
+	STRU MACR NAME 'GRID2' COPY 'GRID1' Z (zgrid2) HEIG (hgridm) END
+	STRU MACR NAME 'GRID3' COPY 'GRID1' Z (zgrid3) HEIG (hgridm) END
+	STRU MACR NAME 'GRID4' COPY 'GRID1' Z (zgrid4) HEIG (hgridm) END
+	STRU MACR NAME 'GRID5' COPY 'GRID1' Z (zgrid5) HEIG (hgridm) END
+	STRU MACR NAME 'GRID6' COPY 'GRID1' Z (zgrid6) END
 
 ! Housing definition
-
 	STRU MACR NAME 'HOUSINGI' TYPG 'CYLINDER'
-		X 0.		Y 0.
+		X 0.            Y 0.
 		MATE 'IN718'	MASF 1.
 		T (twal0)
 		ZMIN (zcbot)    ZMAX (zctop)
-		SR1 XINT	
-				( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)
-				          	( 3.*p) 	( 2.*p) 	( 1.*p) 	(0.*p) 		(-1.*p) 	(-2.*p) 	(-3.*p)  	(-3.*p-ph)
-				          	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)
-				          	(-3.*p) 	(-2.*p) 	(-1.*p) 	(0.*p) 		( 1.*p) 	( 2.*p) 	( 3.*p)  	( 3.*p+ph)
-		TERM
-		SR1 YINT
-				(-3.*p-ph)	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		( 3.*p+ph)
-				          	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)	( 3.*p+ph)
-				          	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p)		(-1.*p)		(-2.*p)		(-3.*p)	 	(-3.*p-ph)
-				          	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)
-		TERM
-		SR1 XEXT	
-				( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)
-				               	( 3.*p)		( 2.*p) 	( 1.*p) 	( 0.*p)	 	(-1.*p) 	(-2.*p) 	(-3.*p)  	(-3.*p-ph-thic)
-				               	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)
-				               	(-3.*p-thic)	(-2.*p-thic) 	(-1.*p-thic) 	(0.*p+thic) 	( 1.*p+thic) 	( 2.*p+thic) 	( 3.*p+thic)  	( 3.*p+ph+thic)
-		TERM
-		SR1 YEXT
-				(-3.*p-ph-thic)	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		( 3.*p+ph+thic)
-				               	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)
-				               	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p-thic)	(-1.*p-thic)	(-2.*p-thic)	(-3.*p-thic)	(-3.*p-ph-thic)
-				               	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)
-		TERM
-!		SR1 XINT ( 3.*p+ph)		( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	( 3.*p+ph)	( 3.*p+ph)	TERM 
-!		SR1 YINT 0.			( 3.*p+ph)	( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	0.		TERM
-!		SR1 XEXT ( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	( 3.*p+ph+thic)	TERM
-!		SR1 YEXT (-3.*p-ph-thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	TERM
-		SR1 DSCR 0. REGU 4 1. TERM
+		SR1 XINT (6.*p+2.*ph)		(6.*p+2.*ph)		0.      	TERM
+		SR1 YINT 0.     		(6.*p+2.*ph)  		(6.*p+2.*ph)  	TERM
+		SR1 XEXT (6.*p+2.*ph+thic)	(6.*p+2.*ph+thic)	(-thic)		TERM
+		SR1 YEXT (-thic)		(6.*p+2.*ph+thic)	(6.*p+2.*ph+thic)  TERM
+		SR1 DSCR 0. REGU 3 1. TERM
 	END
         STRU MACR NAME 'INSUL' TYPG 'CYLINDER'
- 		X 0.		Y 0.
+                X 0.            Y 0.
                 MATE 'FFRAX'    MASF 1.
-                T (twal0)
+                T 300.C                                                                                                                 !  the value (twal0) was changed to be the same as the housing BC
                 ZMIN (zcbot)    ZMAX (zctop)
-                SR1 XINT ( toagap+agap)		(toagap+agap)		(-toagap-agap)		(-toagap-agap)		( toagap+agap)		TERM
-                SR1 YINT (-toagap-agap)		(toagap+agap)		( toagap+agap)		(-toagap-agap)		(-toagap-agap)		TERM
-                SR1 XEXT ( toagap+agap+ithic)	(toagap+agap+ithic)	(-toagap-agap-ithic)	(-toagap-agap-ithic)	( toagap+agap+ithic)	TERM
-                SR1 YEXT (-toagap-agap-ithic)	(toagap+agap+ithic)	( toagap+agap+ithic)	(-toagap-agap-ithic)	(-toagap-agap-ithic)	TERM
-                SR1 DSCR 0. REGU 3 1. TERM
+                SR1 XINT (toagap+agap)          (toagap+agap)           (-agap-ithic)           TERM
+                SR1 YINT (-agap-ithic)          (toagap+agap)           (toagap+agap)           TERM
+                SR1 XEXT (toagap+agap+ithic)    (toagap+agap+ithic)     (-thic-agap-ithic)      TERM
+                SR1 YEXT (-thic-agap-ithic)     (toagap+agap+ithic)     (toagap+agap+ithic)     TERM
+                SR1 DSCR 0. REGU 1 1. TERM
         END
         STRU MACR NAME 'HOUSINGO' TYPG 'CYLINDER'
- 		X 0.		Y 0.
+                X 0.            Y 0.
                 MATE 'IN718'    MASF 1.
                 T (twal0)
                 ZMIN (zcbot)    ZMAX (zctop)
-                SR1 XINT ( toedgec-ethic)	( toedgec-ethic)	(-toedgec+ethic)	(-toedgec+ethic)	( toedgec-ethic)	TERM
-                SR1 YINT (-toedgec+ethic)	( toedgec-ethic)	( toedgec-ethic)	(-toedgec+ethic)	(-toedgec+ethic)	TERM
-                SR1 XEXT ( toedgec)		( toedgec)		(-toedgec)		(-toedgec)		( toedgec)		TERM
-                SR1 YEXT (-toedgec)		( toedgec)		( toedgec)		(-toedgec)		(-toedgec)		TERM
+                SR1 XINT (toedge-ethic)                 (toedge-ethic)  (-agap-ithic-ethic-thic)        TERM
+                SR1 YINT (-agap-ithic-ethic-thic)       (toedge-ethic)  (toedge-ethic)                  TERM
+                SR1 XEXT (toedge)                       (toedge)        (-thic-agap-ithic-ethic)        TERM
+                SR1 YEXT (-thic-agap-ithic-ethic)       (toedge)        (toedge)                        TERM
                 SR1 DSCR 0. REGU 1 1. TERM
         END
+
 
 ! Copies of intact heated rod layers' definitions
 	! Copies the definitions of the intact heated rods. ihrs is a vector containing the non-sequential intact heated rod ID number.
@@ -620,20 +563,17 @@ STRU VESSEL
 		STRU COND MACR (WORD('IHRL4-'//CHAR(ihrs[ii]))) MACR (WORD('IHRL4-'//CHAR(ihrs[ii]))) END
 	#enddo	
 
-	(ii=0)								
-	#do
-		(ii=ii+1)
-		#if (ii > SIZE(gts)) #exit
-		STRU COND MACR (WORD('GTCO-'//CHAR(gts[ii]))) MACR (WORD('GTCO-'//CHAR(gts[ii]))) END
-		STRU COND MACR (WORD('GTCL-'//CHAR(gts[ii]))) MACR (WORD('GTCL-'//CHAR(gts[ii]))) END
-	#enddo
+	STRU COND MACR 'GTCO1' MACR 'GTCO1' END
+	STRU COND MACR 'GTCL1' MACR 'GTCL1' END
+	STRU COND MACR 'GTCO2' MACR 'GTCO2' END
+	STRU COND MACR 'GTCL2' MACR 'GTCL2' END
 
-!	STRU COND MACR 'GRID1' MACR 'GRID1' END
-!	STRU COND MACR 'GRID2' MACR 'GRID2' END
-!	STRU COND MACR 'GRID3' MACR 'GRID3' END
-!	STRU COND MACR 'GRID4' MACR 'GRID4' END
-!	STRU COND MACR 'GRID5' MACR 'GRID5' END
-!	STRU COND MACR 'GRID6' MACR 'GRID6' END
+	STRU COND MACR 'GRID1' MACR 'GRID1' END
+	STRU COND MACR 'GRID2' MACR 'GRID2' END
+	STRU COND MACR 'GRID3' MACR 'GRID3' END
+	STRU COND MACR 'GRID4' MACR 'GRID4' END
+	STRU COND MACR 'GRID5' MACR 'GRID5' END
+	STRU COND MACR 'GRID6' MACR 'GRID6' END
 
 
 	STRU COND MACR 'HOUSINGI' MACR 'HOUSINGI' END
@@ -653,12 +593,8 @@ STRU VESSEL
 	STRU COND MACR 'INSUL' FACE 'EXTERNAL' MACR 'HOUSINGO' FACE 'INTERNAL' END
 
 ! Gas gap heat transfer
-	(ii=0)								
-	#do
-		(ii=ii+1)
-		#if (ii > SIZE(gts)) #exit
-		STRU GAP MACR (WORD('GTCO-'//CHAR(gts[ii]))) FACE 'EXTERNAL' MACR (WORD('GTCL-'//CHAR(gts[ii]))) FACE 'INTERNAL' END
-	#enddo
+	STRU GAP MACR 'GTCO1' FACE 'EXTERNAL' MACR 'GTCL1' FACE 'INTERNAL' END
+	STRU GAP MACR 'GTCO2' FACE 'EXTERNAL' MACR 'GTCL2' FACE 'INTERNAL' END
 
 	STRU GAP MACR 'HOUSINGI' FACE 'EXTERNAL' MACR 'INSUL' FACE 'INTERNAL' GAS 'N2' PP 1.bar END
 
@@ -676,18 +612,7 @@ STRU VESSEL
 		STRU CONV MACR (WORD('IHRL4-'//CHAR(ihrs[ii]))) FACE 'EXTERNAL' END				! Defines the folloing line: STRU CONV MACR 'IHRL4-1' FACE 'EXTERNAL' END
 	#enddo	
 
-	(ii=0)								
-	#do
-		(ii=ii+1)
-		#if (ii > SIZE(gts))	#exit
-		STRU CONV MACR (WORD('GTCL-'//CHAR(gts[ii]))) FACE 'EXTERNAL' END				! Defines the folloing line: STRU CONV MACR 'IHRL4-1' FACE 'EXTERNAL' END
-	#enddo	
-
 	STRU CONV MACR 'HOUSINGI' FACE 'INTERNAL' END
-
-!!!!! TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!! CONVECTION OF GRID !!!!!!!!!!!!!!!!!!!
-!!!!! TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !		END CONVECTION
@@ -697,11 +622,11 @@ STRU VESSEL
 !		BEGIN POWER
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-! Definition of the power structure for the rods
+! Definition of the power structure for the full rods
 	(ii=0)
 	#do
 		(ii=ii+1)
-		#if (ii > SIZE(ihrs)) #exit
+		#if (ii > SIZE(ihrfull)) #exit
 		STRU NT_HEAT
 			UNIT 'W'
 			PNOM 1.	
@@ -713,7 +638,7 @@ STRU VESSEL
 				(tstep4+60.s)	(pmax)
 				(tstep4+61.s)	0.W
 			TERM
-			SC1 MACR (WORD('IHRL2-'//CHAR(ihrs[ii]))) TERM
+			SC1 MACR (WORD('IHRL2-'//CHAR(ihrfull[ii]))) TERM
 			SR1 PROF
 				0.000	0.48
 				0.199	0.48
@@ -741,6 +666,57 @@ STRU VESSEL
 		END
 	#enddo
 
+! Definition of the power of the half rods
+	(ii=0)
+	#do
+		(ii=ii+1)
+		#if (ii > SIZE(ihrhalf)) #exit
+		STRU NT_HEAT
+			UNIT 'W'
+			PNOM 1.	
+			SR1 FACT 1. TERM
+			SR1 POWE
+				0.		0.W
+				(tstep2)	0.W				! There are 6 half intact (or ballooned) heated rods in the diagonal
+				(tstep2+8.)    (pmax/2.)
+				(tstep4+60.s)   (pmax/2.)
+				(tstep4+61.s)   0.W
+			TERM
+			SC1 MACR (WORD('IHRL2-'//CHAR(ihrhalf[ii]))) TERM
+			SR1 PROF
+				0.000	0.48
+				0.199	0.48
+				0.200	0.62
+				0.459	0.62
+				0.460	0.87
+				0.719	0.87
+				0.720	1.11
+				0.979	1.11
+				0.980	1.34
+				1.239	1.34
+				1.240	1.45
+				1.314	1.45
+				1.315	1.52
+				1.349	1.52
+				1.350	2.20
+				1.649	2.20
+				1.650	1.37
+				1.684	1.37
+				1.685	1.25
+				1.759	1.25
+				1.760	1.11
+				2.019	1.11
+				2.020	0.89
+				2.279	0.89
+				2.280	0.66
+				2.539	0.66
+				2.540	0.50
+				2.799	0.50
+				2.800	0.45
+				3.000	0.45
+			TERM
+		END
+	#enddo
 
 ! Definition of the power of the internal housing
 	STRU NT_HEAT
@@ -750,8 +726,8 @@ STRU VESSEL
 		SR1 POWE
 			0.s		0.W
 			(tstep1)	0.W
-			(tstep1+8.)	(phouse)
-			(tend)		(phouse)
+			(tstep1+8.)	(phouse*0.5)
+			(tend)		(phouse*0.5)
 
 		TERM
 		SC1 MACR 'HOUSINGI' TERM
@@ -760,7 +736,6 @@ STRU VESSEL
 			3.000	1.000
 		TERM
 	END
-
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !		END POWER
@@ -844,6 +819,7 @@ END
 	STRU CONNECTI NAME (WORD('OUT_P'//CHAR(ii))) COPY 'OUT_P1' CHANNEL (ii) END                                     ! Defines the folloing line: STRU CONNECTI NAME 'OUT_P2' COPY 'OUT_P1' CHANNEL 2 END
 #enddo
 
+
 ! HOUSING BC 
 STRU CONNECTI
 	NAME 'TEMP_BC'
@@ -882,8 +858,8 @@ STRU VISU
 	FILE "vessel_meshing.vis"
 	TITL "Material field: axial cut"
 	STIT "COAL expriment"
-	XMIN (-toedgec-eps) XMAX (toedgec+eps) XDEC 4 LABX "m" 
-	YMIN (-toedgec-eps) YMAX (toedgec+eps) YDEC 4 LABY "m"
+	XMIN (-thic-agap-ithic-ethic-eps) XMAX (toedge+eps) XDEC 4 LABX "m" 
+	YMIN (-thic-agap-ithic-ethic-eps) YMAX (toedge+eps) YDEC 4 LABY "m"
 	ELEV ((0.5-zcbot)/hclad) DIREGRID 0. DIREGRID (pi/2.)
 	FIELD 'MATE' VELO 'NO' MECA 'NO' BACK 'WHITE' GRID 'NO' BOUN 'YES' MESH 'NO'
 	SC1 MATE	'BN'	'IN718'	'HASTELLO'	'IN600'	'FFRAX'		TERM
@@ -895,8 +871,8 @@ STRU VISU
 	FILE "vessel_meshing.vis"
 	TITL "Temperature field: axial cut"
 	STIT "COAL EXPERIMENT"
-	XMIN (-toedgec-eps) XMAX (toedgec+eps) XDEC 4 LABX "m" 
-	YMIN (-toedgec-eps) YMAX (toedgec+eps) YDEC 4 LABY "m"
+	XMIN (-thic-agap-ithic-ethic-eps) XMAX (toedge+eps) XDEC 4 LABX "m" 
+	YMIN (-thic-agap-ithic-ethic-eps) YMAX (toedge+eps) YDEC 4 LABY "m"
 	FIELD 'T' ELEV ((0.5-zcbot)/hclad) GRID 'NO' DIREGRID 0. DIREGRID (pi/2.)
 	(palette=0 , pal_min=200. , pal_max=800.)
 	CALL "temperature.pal" 
@@ -975,7 +951,7 @@ STRU VISU
 	STRU VARI NAME 'IHRL2-19' COPY 'IHRL2-25' END
 	STRU VARI NAME 'IHRL2-13' COPY 'IHRL2-25' END
 	STRU VARI NAME 'IHRL2-7'  COPY 'IHRL2-25' END
-!	STRU VARI NAME 'HOUSINGI' COPY 'IHRL2-25' END
+	STRU VARI NAME 'HOUSINGI' COPY 'IHRL2-25' END
 	SFIL (name//"-"//"-power-profile")
 END
 
@@ -1118,10 +1094,10 @@ STRU VISU
 	STRU VARI NAME 'T_SHR_i' VARI 'T' MACR 'HOUSINGI' ELEV 1.60m ANGL (pi/4.)
 		FILEPATH "compvar.path"
 	END
-	STRU VARI NAME 'GTCO-20' VARI 'T' MACR 'GTCO-20' ELEV 1.55m ANGL (pi/4.)
+	STRU VARI NAME 'GTCO2' VARI 'T' MACR 'GTCO2' ELEV 1.55m ANGL (pi/4.)
 		FILEPATH "compvar.path"
 	END
-	STRU VARI NAME 'GTCL-20' VARI 'T' MACR 'GTCL-20' ELEV 1.55m ANGL (pi/4.)
+	STRU VARI NAME 'GTCL2' VARI 'T' MACR 'GTCL2' ELEV 1.55m ANGL (pi/4.)
 		FILEPATH "compvar.path"
 	END
 	STRU VARI NAME 'Liq' ELEV 1.5m VARI 'T_liq' CHANNEL 16
@@ -1199,21 +1175,20 @@ STRU VISU
 	LABX "Alpha (%)" LABY "Z (m)"
 	YMIN (zcbot) YMAX (zctop)
 	XMIN 0. XMAX 1. XDEC 10
-	STRU VARI NAME 'Chan-37'  CHANNEL 37 FIELD 'x_alfa'
+	STRU VARI NAME 'Chan-12'  CHANNEL 12 FIELD 'x_alfa'
 		FILEPATH "fluidprofile.path"
 	END
-	STRU VARI NAME 'Chan-46' CHANNEL 46 FIELD 'x_alfa'
+	STRU VARI NAME 'Chan-19' CHANNEL 19 FIELD 'x_alfa'
 		FILEPATH "fluidprofile.path"
 	END
-	STRU VARI NAME 'Chan-55'  CHANNEL 55 FIELD 'x_alfa'
+	STRU VARI NAME 'Chan-27'  CHANNEL 27 FIELD 'x_alfa'
 		FILEPATH "fluidprofile.path"
 	END
-	STRU VARI NAME 'Chan-64'  CHANNEL 64 FIELD 'x_alfa'
+	STRU VARI NAME 'Chan-36'  CHANNEL 36 FIELD 'x_alfa'
 		FILEPATH "fluidprofile.path"
 	END
 	SFIL (name//"-"//"-void-prof")
 END
-
 
 STRU VISU
 	FILE "evol.vis"
@@ -1229,3 +1204,23 @@ END
 !		END VISU
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!STRU PARAVIEW
+!	FILE "vessel_paraview"
+!	FREQ 1.
+!	STRU SCALAR
+!		FIELD 'POROSITY'
+!		FIELD 'x_alfa'
+!		FIELD 'P'
+!		FIELD 'T_liq'
+!		FIELD 'T_gas'
+!	END
+!END
+
+!STRU SAVE
+!	FILE "my_saved_data"
+!	FIRM 'DIRECTORY'						! 'DIRZIP'
+!	FREQ 1.E-5
+!END
+
+!STRU SAVE FILE "reflood_save" FORM 'DIRZIP' SC1 LISTTIME 'TIMA' TERM END
