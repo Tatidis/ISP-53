@@ -46,7 +46,7 @@ pi = 4.*ATAN(1.)
 
 ! Meshing parameters
 
-	naxia = 20			! number of axial cells 
+	naxia = 30			! number of axial cells 
 	naxgrid = 1			! number of axial cells between grids. This parameter is run with a different option other than the one that uses naxia.
 	ndsca = 1			! 1 azimuthal structure per channel
 	nrods = 46			! this parameter includes: intact heated rods; ballooned heated rods; guide tubes
@@ -77,8 +77,6 @@ pi = 4.*ATAN(1.)
 
 	psqrt2= pitch*SQRT(2.)
 	eps = toedgec*0.01
-	
-	f=0.01
 
 ! Intact heated rod layer 1         ! boron nitride core	"Intact heated rod" is abbreviated to "ihr"
 	dihr1 = 0.mm                ! boron nitride center of the intact heated rods
@@ -403,7 +401,7 @@ STRU VESSEL
 !		SC1 GRID 'GRID1' 'GRID2' 'GRID3' 'GRID4' 'GRID5' 'GRID6' TERM
 
 ! Housing declaration
-		SC1 SHROUD 'HOUSINGI'  'HOUSINGJ' TERM
+		SC1 SHROUD 'HOUSINGI' TERM
 		SC1 SHROUD 'INSUL' 'HOUSINGO' TERM
 
 	END
@@ -525,41 +523,6 @@ STRU VESSEL
 				          	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)
 		TERM
 		SR1 XEXT	
-				( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)
-				               	( 3.*p)		( 2.*p) 	( 1.*p) 	( 0.*p)	 	(-1.*p) 	(-2.*p) 	(-3.*p)  	(-3.*p-ph-thic*f)
-				               	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)
-				               	(-3.*p-thic*f)	(-2.*p-thic*f) 	(-1.*p-thic*f) 	(0.*p+thic*f) 	( 1.*p+thic*f) 	( 2.*p+thic*f) 	( 3.*p+thic*f)  	( 3.*p+ph+thic*f)
-		TERM
-		SR1 YEXT
-				(-3.*p-ph-thic*f)	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		( 3.*p+ph+thic*f)
-				               	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)
-				               	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p-thic*f)	(-1.*p-thic*f)	(-2.*p-thic*f)	(-3.*p-thic*f)	(-3.*p-ph-thic*f)
-				               	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)
-		TERM
-!		SR1 XINT ( 3.*p+ph)		( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	( 3.*p+ph)	( 3.*p+ph)	TERM 
-!		SR1 YINT 0.			( 3.*p+ph)	( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	0.		TERM
-!		SR1 XEXT ( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	( 3.*p+ph+thic)	TERM
-!		SR1 YEXT (-3.*p-ph-thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	TERM
-		SR1 DSCR 0. REGU 4 1. TERM
-	END
-	STRU MACR NAME 'HOUSINGJ' TYPG 'CYLINDER'
-		X 0.		Y 0.
-		MATE 'IN718'	MASF 1.
-		T (twal0)
-		ZMIN (zcbot)    ZMAX (zctop)
-		SR1 XINT	
-				( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)
-				               	( 3.*p)		( 2.*p) 	( 1.*p) 	( 0.*p)	 	(-1.*p) 	(-2.*p) 	(-3.*p)  	(-3.*p-ph-thic*f)
-				               	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)
-				               	(-3.*p-thic*f)	(-2.*p-thic*f) 	(-1.*p-thic*f) 	(0.*p+thic*f) 	( 1.*p+thic*f) 	( 2.*p+thic*f) 	( 3.*p+thic*f)  	( 3.*p+ph+thic*f)
-		TERM
-		SR1 YINT
-				(-3.*p-ph-thic*f)	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		( 3.*p+ph+thic*f)
-				               	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)
-				               	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p-thic*f)	(-1.*p-thic*f)	(-2.*p-thic*f)	(-3.*p-thic*f)	(-3.*p-ph-thic*f)
-				               	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)
-		TERM
-		SR1 XEXT	
 				( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)
 				               	( 3.*p)		( 2.*p) 	( 1.*p) 	( 0.*p)	 	(-1.*p) 	(-2.*p) 	(-3.*p)  	(-3.*p-ph-thic)
 				               	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)
@@ -568,12 +531,15 @@ STRU VESSEL
 		SR1 YEXT
 				(-3.*p-ph-thic)	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		( 3.*p+ph+thic)
 				               	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)
-				               	( 3.*p)	        ( 2.*p)	    	( 1.*p)	        ( 0.*p-thic)	(-1.*p-thic)	(-2.*p-thic)	(-3.*p-thic)	(-3.*p-ph-thic)
+				               	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p-thic)	(-1.*p-thic)	(-2.*p-thic)	(-3.*p-thic)	(-3.*p-ph-thic)
 				               	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)
 		TERM
-		SR1 DSCR 0. REGU 2 1. TERM
+!		SR1 XINT ( 3.*p+ph)		( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	( 3.*p+ph)	( 3.*p+ph)	TERM 
+!		SR1 YINT 0.			( 3.*p+ph)	( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	0.		TERM
+!		SR1 XEXT ( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	( 3.*p+ph+thic)	TERM
+!		SR1 YEXT (-3.*p-ph-thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	TERM
+		SR1 DSCR 0. REGU 4 1. TERM
 	END
-
         STRU MACR NAME 'INSUL' TYPG 'CYLINDER'
  		X 0.		Y 0.
                 MATE 'FFRAX'    MASF 1.
@@ -671,7 +637,6 @@ STRU VESSEL
 
 
 	STRU COND MACR 'HOUSINGI' MACR 'HOUSINGI' END
-	STRU COND MACR 'HOUSINGJ' MACR 'HOUSINGJ' END
 	STRU COND MACR 'INSUL' MACR 'INSUL' END
 	STRU COND MACR 'HOUSINGO' MACR 'HOUSINGO' END
 
@@ -684,8 +649,7 @@ STRU VESSEL
 		STRU COND MACR (WORD('IHRL2-'//CHAR(ihrs[ii]))) FACE 'EXTERNAL' MACR (WORD('IHRL3-'//CHAR(ihrs[ii]))) FACE 'INTERNAL' END	
 		STRU COND MACR (WORD('IHRL3-'//CHAR(ihrs[ii]))) FACE 'EXTERNAL' MACR (WORD('IHRL4-'//CHAR(ihrs[ii]))) FACE 'INTERNAL' END	
 	#enddo
-
-	STRU COND MACR 'HOUSINGI' FACE 'EXTERNAL' MACR 'HOUSINGJ' FACE 'INTERNAL' END
+	
 	STRU COND MACR 'INSUL' FACE 'EXTERNAL' MACR 'HOUSINGO' FACE 'INTERNAL' END
 
 ! Gas gap heat transfer
@@ -696,7 +660,7 @@ STRU VESSEL
 		STRU GAP MACR (WORD('GTCO-'//CHAR(gts[ii]))) FACE 'EXTERNAL' MACR (WORD('GTCL-'//CHAR(gts[ii]))) FACE 'INTERNAL' END
 	#enddo
 
-	STRU GAP MACR 'HOUSINGJ' FACE 'EXTERNAL' MACR 'INSUL' FACE 'INTERNAL' GAS 'N2' PP 1.bar END
+	STRU GAP MACR 'HOUSINGI' FACE 'EXTERNAL' MACR 'INSUL' FACE 'INTERNAL' GAS 'N2' PP 1.bar END
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !		END CONDUCTION
@@ -790,7 +754,7 @@ STRU VESSEL
 			(tend)		(phouse)
 
 		TERM
-		SC1 MACR 'HOUSINGJ' TERM
+		SC1 MACR 'HOUSINGI' TERM
 		SR1 PROF
 			0.000	1.000
 			3.000	1.000

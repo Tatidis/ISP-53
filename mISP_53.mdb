@@ -1,0 +1,256 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!		BEGIN MDB
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+STRU MDB
+
+! Definition of Boron nitride (BN)
+	STRU SET NAME 'BN' TYPE 'MATERIAL'
+		T_sol 3000.C							! NOT REAL VALUE. According to Wikipedia, little is know of it's melting properties.
+		T_liq 3001.C							! NOT REAL VALUE. According to Wikipedia, little is know of it's melting properties.
+		M 24.8177g/mol							! Value taken from: https://en.wikipedia.org/wiki/Boron_nitride
+		STRU PROPERTY NAME "cp_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				473.15K	1206.36
+				573.15K	1377.26
+				673.15K	1524.24
+				773.15K	1647.30
+				873.15K	1709.00
+				1073.15K	1791.00
+				1273.15K	1840.00
+			TERM
+		END
+		STRU PROPERTY NAME "h_s(T)"
+			LAW 'INTEGRAL' VARIREF 'T'
+			SR1 VALUE
+				473.15K	1206.36
+				573.15K	1377.26
+				673.15K	1524.24
+				773.15K	1647.30
+				873.15K	1709.00
+				1073.15K	1791.00
+				1273.15K	1840.00
+			TERM
+
+		END
+		STRU PROPERTY NAME "lambda_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				473.15K	40.00
+				573.15K	37.50
+				673.15K	32.00
+				773.15K	32.50
+				837.15K	30.00
+				1073.15K 25.00
+				1273.15K 20.00
+			TERM	
+		END
+		STRU PROPERTY NAME "em_s(T)" LAW 'CONSTANT' VALUE 0.8 END		! NOT REAL. COMPLETE GUESS.
+		STRU PROPERTY NAME "rho_s(T)" LAW 'CONSTANT' VALUE 1910.00 END
+	END
+
+! Definition of Inconel 718
+	STRU SET NAME 'IN718' TYPE 'MATERIAL'
+		T_sol 1260.C							! Value taken from: https://asm.matweb.com/search/SpecificMaterial.asp?bassnum=NINC34
+		T_liq 1336.C							! value taken from: https://asm.matweb.com/search/SpecificMaterial.asp?bassnum=NINC34
+		M 0.058kg/mol
+		STRU PROPERTY NAME 'cp_s(T)'
+			LAW 'TABLE' VARIABLE 'T'
+			VUNIT 'K'
+			SR1 VALUE
+				473.15	443.71
+				573.15	476.21
+				673.15	497.89
+				773.15	519.56
+				837.15	541.23
+				1073.15	573.74
+				1273.15	617.08
+			TERM
+		END
+		STRU PROPERTY NAME 'h_s(T)'
+			LAW 'INTEGRAL' VARIREF 'T'
+			SR1 VALUE
+				473.15	443.71
+				573.15	476.21
+				673.15	497.89
+				773.15	519.56
+				837.15	541.23
+				1073.15	573.74
+				1273.15	617.08
+			TERM
+
+		END
+		STRU PROPERTY NAME "lambda_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			PUNIT 'W/m/K'	VUNIT 'K'
+			SR1 VALUE
+				473.15	14.27
+				573.15	15.85
+				673.15	17.44
+				773.15	19.03
+				837.15	20.62
+				1073.15	23.80
+				1273.15	26.98
+			TERM	
+		END
+		STRU PROPERTY NAME 'rho_s(T)'
+			LAW 'TABLE'	VARIABLE 'T'
+			PUNIT 'kg/m3'	VUNIT 'K'
+			SR1 VALUE
+				473.15	8159.56
+				573.15	8123.99
+				673.15	8087.06
+				773.15	8048.53
+				837.15	8008.18
+				1073.15	7921.11
+				1273.15	7824.00
+			TERM	
+		END
+		STRU PROPERTY NAME 'R_s(T)' LAW 'CONSTANT' VALUE 1.25E-06 END 
+		STRU PROPERTY NAME 'em_s(T)' LAW 'CONSTANT' VALUE 0.5 END		! This value should be between 0.3 and 0.9 according to the ISP-53 project specifications
+	END
+
+! Definition of Inconel 600
+	STRU SET NAME 'IN600' TYPE 'MATERIAL'
+		T_sol 1354.C							! Value taken from: https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-600.pdf
+		T_liq 1413.C							! Value taken from: https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-600.pdf
+		M 0.058kg/mol							! NOT REAL VALUE, Molar mass of nickel
+		STRU PROPERTY NAME "cp_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				323.00K	448.00
+				373.00K	460.00
+				473.00K	483.00
+				673.00K	516.00
+				873.00K	569.00
+				1073.00K	609.00
+			TERM
+		END
+		STRU PROPERTY NAME "h_s(T)"
+			LAW 'INTEGRAL' VARIREF 'T'
+			SR1 VALUE
+				323.00K	448.00
+				373.00K	460.00
+				473.00K	483.00
+				673.00K	516.00
+				873.00K	569.00
+				1073.00K	609.00
+			TERM
+		END
+		STRU PROPERTY NAME "lambda_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				323.00K	14.90
+				373.00K	15.60
+				473.00K	17.20
+				673.00K	20.40
+				873.00K	23.70
+				1073.00K	27.40
+			TERM
+		END
+		STRU PROPERTY NAME "rho_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				323.00K	8400.00
+				373.00K	8381.00
+				473.00K	8342.00
+				673.00K	8264.00
+				873.00K	8225.00
+				1073.00K	8185.00
+			TERM
+		END
+		STRU PROPERTY NAME "em_s(T)" LAW 'CONSTANT' VALUE 0.9 END	! NOT REAL VALUE. Taken from: https://www.specialmetals.com/documents/technical-bulletins/inconel/inconel-alloy-600.pdf
+	END
+
+! Definition of Hastelloy C22
+	STRU SET NAME 'HASTELLO' TYPE 'MATERIAL'
+		T_sol 1357.C 							! Value taken from: https://www.zapp.com/fileadmin/user_upload/HASTELLOY_C-22-alloy-Datasheet.pdf
+		T_liq 1399.C							! Value taken from: https://www.zapp.com/fileadmin/user_upload/HASTELLOY_C-22-alloy-Datasheet.pdf
+		M 0.058kg/mol							! NOT REAL. This is the molar mass of nickel
+		STRU PROPERTY NAME "cp_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				325.15K	414.00
+				372.15K	423.00
+				473.15K	444.00
+				573.15K	460.00
+				673.15K	473.00
+				773.15K	485.00
+				837.15K	514.00
+				1073.15K	610.00
+				1273.15K	725.00
+			TERM
+		END
+		STRU PROPERTY NAME "h_s(T)"
+			LAW 'INTEGRAL' VARIREF 'T'
+			SR1 VALUE
+				325.15K	414.00
+				372.15K	423.00
+				473.15K	444.00
+				573.15K	460.00
+				673.15K	473.00
+				773.15K	485.00
+				837.15K	514.00
+				1073.15K	610.00
+				1273.15K	725.00
+			TERM
+		END
+		STRU PROPERTY NAME "lambda_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				325.15K	10.10
+				372.15K	11.10
+				473.15K	13.40
+				573.15K	15.50
+				673.15K	17.50
+				773.15K	19.50
+				837.15K	21.30
+				1073.15K 24.50
+				1273.15K 27.80
+			TERM	
+		END
+		STRU PROPERTY NAME "rho_s(T)" LAW 'CONSTANT' VALUE 8690.00 END
+		STRU PROPERTY NAME "em_s(T)" LAW 'CONSTANT' VALUE 0.18 END		! Emissivity is 0.18 for non-oxidized Hatelloy C22 and 0.3 for oxidized rods according to the ISP-53 specifications
+	END
+
+! Definition of FIBERFRAX
+	STRU SET NAME 'FFRAX' TYPE 'MATERIAL'
+		T_sol 982.C							! Value taken from: https://www.fabricationspecialties.com/pdf/fiberfrax.pdf
+		T_liq 983.C							! Value taken from: https://www.fabricationspecialties.com/pdf/fiberfrax.pdf
+		M 24.8177g/mol							! NOT REAL VALUE; COMPLETELY RANDOM
+		STRU PROPERTY NAME "cp_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				473.15K	1130.0
+				573.15K	1130.0
+				673.15K	1130.0
+				773.15K	1130.0
+			TERM
+		END
+		STRU PROPERTY NAME "h_s(T)"
+			LAW 'INTEGRAL' VARIREF 'T'
+			SR1 VALUE
+				473.15K	1130.0
+				573.15K	1130.0
+				673.15K	1130.0
+				773.15K	1130.0
+			TERM
+		END
+		STRU PROPERTY NAME "lambda_s(T)"
+			LAW 'TABLE' VARIABLE 'T'
+			SR1 VALUE
+				473.15K	0.0798
+				573.15K	0.0892
+				673.15K	0.1012
+				773.15K	0.1159
+			TERM	
+		END
+		STRU PROPERTY NAME "em_s(T)" LAW 'CONSTANT' VALUE 0.5 END		! NOT REAL. COMPLETE GUESS.
+		STRU PROPERTY NAME "rho_s(T)" LAW 'CONSTANT' VALUE 2730.00 END
+	END
+END
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!		END MDB
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

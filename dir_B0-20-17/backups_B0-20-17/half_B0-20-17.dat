@@ -272,7 +272,7 @@ END
 !		BEGIN MDB
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-CALL '../../mISP_53.mdb'									! IMPORTANT: Make sure that MDB.dat is in the same folder.
+CALL '../../../mISP_53.mdb'									! IMPORTANT: Make sure that MDB.dat is in the same folder.
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !		END MDB
@@ -842,9 +842,9 @@ STRU CONNECTI
 	STAT 'ON'
 	MACR 'HOUSINGO'
 	FACE 'EXTERNAL'
-	CALL './TSHROUD_TIMP_B0-20-17'
-	CALL './TSHROUD_INST_B0-20-17'
-	CALL './TSHROUD_H_B0-20-17'
+	CALL '../TSHROUD_TIMP_B0-20-17'
+	CALL '../TSHROUD_INST_B0-20-17'
+	CALL '../TSHROUD_H_B0-20-17'
 	Z    1.6m
 END
 
