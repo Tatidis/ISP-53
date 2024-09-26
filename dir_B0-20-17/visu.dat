@@ -1,0 +1,426 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!		BEGIN VISU
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+STRU VISU FILE "menu.vis" PAUS 'YES' ALBUM 'YES' END
+ 
+STRU VISU
+	FILE "vessel_meshing.vis"
+	TITL "Material field: axial cut"
+	STIT "COAL expriment"
+	XMIN (-toedgec-eps) XMAX (toedgec+eps) XDEC 4 LABX "m" 
+	YMIN (-toedgec-eps) YMAX (toedgec+eps) YDEC 4 LABY "m"
+	ELEV ((0.5-zcbot)/hclad) DIREGRID 0. DIREGRID (pi/2.)
+	FIELD 'MATE' VELO 'NO' MECA 'NO' BACK 'WHITE' GRID 'NO' BOUN 'YES' MESH 'NO'
+	SC1 MATE	'BN'	'IN718'	'HASTELLO'	'IN600'	'FFRAX'		TERM
+	SC1 COLO	'RED'	'BLUE'	'ORANGE'	'PURPLE'	'GREENYEL'	TERM
+	SFIL (name//"-"//"-mate-vert-cut")
+END
+ 
+STRU VISU
+	FILE "vessel_meshing.vis"
+	TITL "Temperature field: axial cut"
+	STIT "COAL EXPERIMENT"
+	XMIN (-toedgec-eps) XMAX (toedgec+eps) XDEC 4 LABX "m" 
+	YMIN (-toedgec-eps) YMAX (toedgec+eps) YDEC 4 LABY "m"
+	FIELD 'T' ELEV ((0.5-zcbot)/hclad) GRID 'NO' DIREGRID 0. DIREGRID (pi/2.)
+	(palette=0 , pal_min=200. , pal_max=800.)
+	CALL "temperature.pal" 
+	SFIL (name//"-"//"-temp-vert-cut")
+END
+
+
+STRU VISU
+	FILE "profile.vis"
+	TITL "Temperature profile"
+	TIT2 "Clad IHRL4-25 and fluid (45deg)"
+	STIT "COAL experiment"
+	LABX "T (C)" LABY "Z (m)"
+	YMIN (zcbot) YMAX (zctop)
+	STRU VARI NAME 'IHRL2-25' VARI 'T' MACR 'IHRL4-25' DSCR 0. ANGL (pi/4.) UNIT0 273.15 UNIT1 274.15
+		FILEPATH "comp_z_prf.path"
+	END
+	STRU VARI NAME 'IHRL4-25' VARI 'T' MACR 'IHRL4-25' ANGL (pi/4.) UNIT0 273.15 UNIT1 274.15
+		FILEPATH "comp_z_prf.path"
+	END
+	STRU VARI NAME 'Gas' FIELD 'T_gas' CHANNEL 12 UNIT0 273.15 UNIT1 274.15
+		FILEPATH "fluidprofile.path"
+	END
+	STRU VARI NAME 'Liquid' FIELD 'T_liq' CHANNEL 12 UNIT0 273.15 UNIT1 274.15
+		FILEPATH "fluidprofile.path"
+	END
+	STRU VARI NAME 'Satur.' FIELD 'T_sat' CHANNEL 12 UNIT0 273.15 UNIT1 274.15
+		FILEPATH "fluidprofile.path"
+	END
+	SFIL (name//"-"//"-temperature-profile")
+END
+
+
+
+STRU VISU
+	FILE "profile.vis"
+	TITL "Power profile"
+	STIT "COAL experiment"
+	LABX "E (W/m)" LABY "Z (m)"
+	YMIN (zcbot) YMAX (zctop)
+	STRU VARI NAME 'IHRL2-25'
+		#begin PATH
+		IFTHEN(1-ASSIGNED('X'))
+			X=SR1
+			Y=SR1
+		ENDIF
+		macr=BASE:'VESSEL':'MACR' (VARI:'NAME')
+		dteta=0.
+		DO i 1 NUMBER 'TMIN' macr
+			dteta=dteta+ (macr:'TMAX' i)-(macr:'TMIN' i)
+		ENDDO
+		coef=8.*ATAN(1.)/dteta
+		nlevel=macr:'NLEVEL'
+		DO i 1 (2*nlevel)
+			Y i <- 0.
+			X i <- 0.
+		ENDDO
+		ilevel=0
+		jlevel=-1
+		DO i 1 NUMBER 'COMP' macr
+			comp=BASE:'VESSEL':'COMP' (macr:'COMP' i)
+			level=comp:'LEVEL'
+			IFTHEN(level > ilevel)
+				ilevel=level
+				jlevel=jlevel+2
+			ENDIF
+      			zmax=comp:'GEOM':'ZMAX'
+      			zmin=comp:'GEOM':'ZMIN'
+			Y (jlevel) <- zmin
+			Y (jlevel+1) <- zmax
+			X (jlevel) <- X:(jlevel) + (comp:'POWER':'PVOL')*coef/(zmax-zmin)
+			X (jlevel+1) <- X:(jlevel)
+		ENDDO
+		#end
+	END
+	STRU VARI NAME 'IHRL2-19' COPY 'IHRL2-25' END
+	STRU VARI NAME 'IHRL2-13' COPY 'IHRL2-25' END
+	STRU VARI NAME 'IHRL2-7'  COPY 'IHRL2-25' END
+	STRU VARI NAME 'HOUSINGI' COPY 'IHRL2-25' END
+	SFIL (name//"-"//"-power-profile")
+END
+
+
+
+STRU VISU 
+	FILE "isotemp.vis"
+	TITL "Temperature field"
+	TIT2 "Vertical cut (45deg)"
+	STIT "COAL experiment"
+	SC1 MACR 'IHRL1-25' 'IHRL2-25' 'IHRL3-25' 'IHRL4-25'
+		 'IHRL4-19' 'IHRL3-19' 'IHRL2-19' 'IHRL1-19' 'IHRL1-19' 'IHRL2-19' 'IHRL3-19' 'IHRL4-19' 
+		 'IHRL4-13' 'IHRL3-13' 'IHRL2-13' 'IHRL1-13' 'IHRL1-13' 'IHRL2-13' 'IHRL3-13' 'IHRL4-13' 
+		 'IHRL4-7'  'IHRL3-7'  'IHRL2-7'  'IHRL1-7'  'IHRL1-7'  'IHRL2-7'  'IHRL3-7'  'IHRL4-7'  TERM
+	SR1 R	0.	0.	0.	0.
+		(psqrt2)	(psqrt2)	(psqrt2)	(psqrt2)	(psqrt2)	(psqrt2)	(psqrt2)	(psqrt2)
+		(2.*psqrt2)	(2.*psqrt2)	(2.*psqrt2)	(2.*psqrt2)	(2.*psqrt2)	(2.*psqrt2)	(2.*psqrt2)	(2.*psqrt2)
+		(3.*psqrt2) 	(3.*psqrt2)	(3.*psqrt2)	(3.*psqrt2)	(3.*psqrt2)	(3.*psqrt2)	(3.*psqrt2)	(3.*psqrt2) TERM
+	SR1 ANGL (pi/4.) (pi/4.) (pi/4.) (pi/4.)
+		 (pi*1.25) (pi*1.25) (pi*1.25) (pi*1.25) (pi/4.) (pi/4.) (pi/4.) (pi/4.)
+		 (pi*1.25) (pi*1.25) (pi*1.25) (pi*1.25) (pi/4.) (pi/4.) (pi/4.) (pi/4.)
+		 (pi*1.25) (pi*1.25) (pi*1.25) (pi*1.25) (pi/4.) (pi/4.) (pi/4.) (pi/4.) TERM
+	SR1 FACT 1.	1.	1.	1.
+		 1.	1.	1.	1.	1.	1.	1.	1.
+		 1.	1.	1.	1.	1.	1.	1.	1.
+		 1.	1.	1.	1.	1.	1.	1.	1. TERM
+	SC1 VERS 'POS'	'POS'	'POS'	'POS'
+		'NEG'	'NEG'	'NEG'	'NEG'	'POS'	'POS'	'POS'	'POS'
+		'NEG'	'NEG'	'NEG'	'NEG'	'POS'	'POS'	'POS'	'POS'
+		'NEG'	'NEG'	'NEG'	'NEG'	'POS'	'POS'	'POS'	'POS' TERM
+	SI1 CHAN 12 19 27 36 TERM
+	YMIN (zcbot) 	YMAX (zctop)
+	XMIN 0. 	XMAX (toedge+eps)
+	GRID 'YES'
+	(palette=0 , pal_min=200. , pal_max=800.)
+	CALL "temperature.pal" 
+	SFIL (name//"-"//"-temp-hori-cut")
+END 
+
+
+STRU VISU
+	FILE "evol.vis"
+	TITL "Temperature and experimental progression"
+	TIT2 " (1.6m , 45deg)"
+	STIT "COAL Experiment"
+	XMIN 0.		XMAX (tend)
+	LABX "time (s)" LABY "T (C)"
+	STRU VARI NAME 'Step1' 
+		SR1 time (tstep1) (tstep1) TERM
+		SR1 table 0. 800. TERM
+	END
+	STRU VARI NAME 'Step2' 
+		SR1 time 0. (tstep2) (tstep2) TERM
+		SR1 table 500. 500. 0. TERM
+	END
+	STRU VARI NAME 'Step3' 
+		SR1 time 0. (tstep3) (tstep3) TERM
+		SR1 table 550. 550. 0. TERM
+	END
+	STRU VARI NAME 'Step4' 
+		SR1 time (tstep4) (tstep4) TERM
+		SR1 table 0. 800. TERM
+	END
+
+	STRU VARI NAME 'T_IHL425' VARI 'T' MACR 'IHRL4-25' ELEV 1.6m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+		UNIT1 1.C	UNIT0 0.C
+	END
+	STRU VARI NAME 'T_IHL419' VARI 'T' MACR 'IHRL4-19' ELEV 1.6m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+		UNIT1 1.C	UNIT0 0.C
+	END
+	STRU VARI NAME 'T_SHR_i' VARI 'T' MACR 'HOUSINGI' ELEV 1.6m ANGL 0.
+		FILEPATH "compvar.path"
+		UNIT1 1.C	UNIT0 0.C
+	END
+	STRU VARI NAME 'T_SHR_o' VARI 'T' MACR 'HOUSINGO' ELEV 1.6m ANGL 0.
+		FILEPATH "compvar.path"
+		UNIT1 1.C	UNIT0 0.C
+	END
+	SFIL (name//"-"//"-temp-evol")
+END
+
+
+! This VISU follow the suggested FoM temperature evolution for quenching. It looks at the suggested rods 10, 17, 21, 34
+! at the suggested elevation of 1.55m, 1.65m, 1.95m. This VISU only displays the T at 1.55m of elevation. 1.65m and 1.95m
+! will be added later. The angle for all of the ones here are pi/4. The effect of the angle will be investigated later.
+STRU VISU
+	FILE "evol.vis"
+	TITL "Temperature evolution FoM "
+	TIT2 " (1.55m , 45deg)"
+	STIT "COAL Experiment"
+	XMIN 0.		XMAX (tend)
+	STRU VARI NAME 'TCR56'
+		CALL './time_TCR56_R10'
+		CALL './temp_TCR56_R10'
+	END
+	LABX "time (s)" LABY "T (C)"
+	STRU VARI NAME 'T_IHL310' VARI 'T' MACR 'IHRL3-10' ELEV 1.55m ANGL (1.13rad)
+		FILEPATH "compvar.path"
+		UNIT1 1.C	UNIT0 0.C
+	END
+	STRU VARI NAME 'TCR101'
+		CALL './time_TCR56_R10'
+		CALL './temp_TCR101_R17'
+	END
+	STRU VARI NAME 'T_IHL317' VARI 'T' MACR 'IHRL3-17' ELEV 1.55m ANGL (pi/180.*218.rad)
+		FILEPATH "compvar.path"
+		UNIT1 1.C	UNIT0 0.C
+	END
+	STRU VARI NAME 'TCR122'
+		CALL './time_TCR56_R10'
+		CALL './temp_TCR122_R21'
+	END
+	STRU VARI NAME 'T_IHL321' VARI 'T' MACR 'IHRL3-21' ELEV 1.55m ANGL (pi/180.*60.rad)
+		FILEPATH "compvar.path"
+		UNIT1 1.C	UNIT0 0.C
+	END
+	STRU VARI NAME 'TCR200'
+		CALL './time_TCR56_R10'
+		CALL './temp_TCR200_R34'
+	END
+	STRU VARI NAME 'T_IHL334' VARI 'T' MACR 'IHRL3-34' ELEV 1.55m ANGL (pi/180*57.rad)
+		FILEPATH "compvar.path"
+		UNIT1 1.C	UNIT0 0.C
+	END
+	SFIL (name//"-"//"-temp-evol")
+END
+
+STRU VISU
+	FILE "evol.vis"
+	TITL "Temperature evolution FoM "
+	TIT2 " (1.65m , 45deg)"
+	STIT "COAL Experiment"
+	XMIN 0.		XMAX (tend)
+	LABX "time (s)" LABY "T (K)"
+	STRU VARI NAME 'T_IHL46' VARI 'T' MACR 'IHRL4-6' ELEV 1.65m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'T_IHL417' VARI 'T' MACR 'IHRL4-17' ELEV 1.65m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'T_IHR433' VARI 'T' MACR 'IHRL4-33' ELEV 1.65m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'T_IHR445' VARI 'T' MACR 'IHRL4-45' ELEV 1.65m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	SFIL (name//"-"//"-temp-evol")
+END
+
+STRU VISU
+	FILE "evol.vis"
+	TITL "Temperature evolution FoM "
+	TIT2 " (1.95m , 45deg)"
+	STIT "COAL Experiment"
+	XMIN 0.		XMAX (tend)
+	LABX "time (s)" LABY "T (K)"
+	STRU VARI NAME 'T_IHL410' VARI 'T' MACR 'IHRL4-10' ELEV 1.95m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'T_IHL421' VARI 'T' MACR 'IHRL4-21' ELEV 1.95m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'T_IHR434' VARI 'T' MACR 'IHRL4-34' ELEV 1.95m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'T_IHR445' VARI 'T' MACR 'IHRL4-45' ELEV 1.95m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	SFIL (name//"-"//"-temp-evol")
+	UNIT1 1.C UNIT0 0.C
+END
+
+STRU VISU
+	FILE "evol.vis"
+	TITL "Temperature evolution FoM"
+	TIT2 " (1.6m, 1.64m, 1.55m , 45deg)"
+	STIT "COAL Experiment"
+	XMIN 0.		XMAX (tend)
+	LABX "time (s)" LABY "T (K)"
+	STRU VARI NAME 'T_SHR_i' VARI 'T' MACR 'HOUSINGI' ELEV 1.60m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'GTCO-20' VARI 'T' MACR 'GTCO-20' ELEV 1.640m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'GTCL-20' VARI 'T' MACR 'GTCL-20' ELEV 1.640m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'GTCO-41' VARI 'T' MACR 'GTCO-41' ELEV 1.55m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+	STRU VARI NAME 'GTCL-41' VARI 'T' MACR 'GTCL-41' ELEV 1.55m ANGL (pi/4.)
+		FILEPATH "compvar.path"
+	END
+
+	STRU VARI NAME 'Liq' ELEV 1.5m VARI 'T_liq' CHANNEL 16
+		STOR 'THER' FILEPATH "meshevol.path"
+	END 
+	SFIL (name//"-"//"-temp-evol")
+END
+
+STRU VISU
+	FILE "evol.vis"
+	TITL "Extremum temperatures"
+	STIT "COAL Experiment"
+	LABX "time (s)" LABY "T (K)"
+	XMIN (tini) XMAX (tend)
+	STRU VARI
+		NAME "Tmax"
+		TEMPERAT 'MAX'
+		FILEPATH "core_extremum_temperature.path"
+	END
+	STRU VARI
+		NAME "Tmin"
+		TEMPERAT 'MIN'
+		FILEPATH "core_extremum_temperature.path"
+	END
+	SFIL (name//"-"//"-extremum-temperature")
+END
+
+
+STRU VISU
+	FILE "evol.vis"
+	TITL "Quench front evolution"
+	TIT2 "Clad IHRL4-25 (45deg)"
+	STIT "COAL Experiment"
+	XMIN (tini) XMAX (tend)
+	LABX "time (s)" LABY "Z (m)"
+	YMIN (zcbot) YMAX (zctop)
+	STRU VARI NAME 'IHRL4-25' PATH "BASE:'VESSEL':'CONV' 'MACR' 'IHRL4-25':'CHANWALL':'ZQF'" END
+	STRU VARI NAME 'Swollen'
+	#begin PATH
+		vessel=BASE:'VESSEL'
+		channel=vessel:'CONV' 'MACR' 'IHRL4-25':'CHANWALL'
+		z=BASE:'VESSEL':'DISC':'AXIA':1
+		DO i 1 NUMBER 'MESH' channel
+			mesh=vessel:'MESH' (channel:'MESH' i)
+			ther=mesh:'THER'
+			IF(ther:'x_alfa':0 > 0.999) EXIT
+			z=mesh:'GEOM':'Z2'
+		ENDDO
+		z
+	#end
+	END
+	STRU VARI NAME 'Compact'
+	#begin PATH
+		vessel=BASE:'VESSEL'
+		channel=vessel:'CONV' 'MACR' 'IHRL4-25':'CHANWALL'
+		z=BASE:'VESSEL':'DISC':'AXIA':1
+		DO i 1 NUMBER 'MESH' channel
+			mesh=vessel:'MESH' (channel:'MESH' i)
+			ther=mesh:'THER'
+			geom=mesh:'GEOM'
+			z=z+(1-ther:'x_alfa':0) * (geom:'Z2' - geom:'Z1')
+		IF(ther:'x_alfa':0 > 0.999) EXIT
+	ENDDO
+	z
+	#end
+	END
+	SFIL (name//"-"//"-quench-front-evol")
+END
+
+
+STRU VISU
+	FILE "profile.vis"
+	TITL "Void fraction profile in channels"
+	STIT "Coal Experiment"
+	LABX "Alpha (%)" LABY "Z (m)"
+	YMIN (zcbot) YMAX (zctop)
+	XMIN 0. XMAX 1. XDEC 10
+	STRU VARI NAME 'Chan-37'  CHANNEL 37 FIELD 'x_alfa'
+		FILEPATH "fluidprofile.path"
+	END
+	STRU VARI NAME 'Chan-46' CHANNEL 46 FIELD 'x_alfa'
+		FILEPATH "fluidprofile.path"
+	END
+	STRU VARI NAME 'Chan-55'  CHANNEL 55 FIELD 'x_alfa'
+		FILEPATH "fluidprofile.path"
+	END
+	STRU VARI NAME 'Chan-64'  CHANNEL 64 FIELD 'x_alfa'
+		FILEPATH "fluidprofile.path"
+	END
+	SFIL (name//"-"//"-void-prof")
+END
+
+
+STRU VISU
+	FILE "evol.vis"
+	TITL "Rod conductivity"
+	TIT2 "Rod IHRL2-25 (0.2m , 135deg)"
+	FREQ 100.
+	STRU VARI NAME 'IHRL2-25' VARI 'CD_EXT' STOR 'PROP' MACR 'IHRL2-25' ELEV 0.2m ANGL (3.*pi/4.) FILEPATH "compvar.path" END
+	SFIL (name//"-"//CHAR(exercise)//"-conductivity-evol")
+END
+
+
+STRU VISU
+	FILE "evol.vis"
+	TITL "Outlet gas flow rate"
+	LABX "t (s)" LABY "Q (kg/s)"
+	STRU VARI NAME 'Steam' CONNECTI 'OUT_P1' SPEC 'STEAM'
+		FILEPATH "flowrate.path"
+	END
+END
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!
+!		END VISU
+!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+STRU SAVE
+	FILE "test_save"
+	FORM 'DIRZIP'
+	SC1 LISTIME 'TIMA' TERM
+	FREQ 1.s
+END
+

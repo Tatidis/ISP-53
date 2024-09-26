@@ -46,7 +46,7 @@ pi = 4.*ATAN(1.)
 
 ! Meshing parameters
 
-	naxia = 20			! number of axial cells 
+	naxia = 5			! number of axial cells 
 	naxgrid = 1			! number of axial cells between grids. This parameter is run with a different option other than the one that uses naxia.
 	ndsca = 1			! 1 azimuthal structure per channel
 	nrods = 46			! this parameter includes: intact heated rods; ballooned heated rods; guide tubes
@@ -77,8 +77,6 @@ pi = 4.*ATAN(1.)
 
 	psqrt2= pitch*SQRT(2.)
 	eps = toedgec*0.01
-	
-	f=0.01
 
 ! Intact heated rod layer 1         ! boron nitride core	"Intact heated rod" is abbreviated to "ihr"
 	dihr1 = 0.mm                ! boron nitride center of the intact heated rods
@@ -403,7 +401,7 @@ STRU VESSEL
 !		SC1 GRID 'GRID1' 'GRID2' 'GRID3' 'GRID4' 'GRID5' 'GRID6' TERM
 
 ! Housing declaration
-		SC1 SHROUD 'HOUSINGI'  'HOUSINGJ' TERM
+		SC1 SHROUD 'HOUSINGI' TERM
 		SC1 SHROUD 'INSUL' 'HOUSINGO' TERM
 
 	END
@@ -525,41 +523,6 @@ STRU VESSEL
 				          	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)	(-3.*p-ph)
 		TERM
 		SR1 XEXT	
-				( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)
-				               	( 3.*p)		( 2.*p) 	( 1.*p) 	( 0.*p)	 	(-1.*p) 	(-2.*p) 	(-3.*p)  	(-3.*p-ph-thic*f)
-				               	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)
-				               	(-3.*p-thic*f)	(-2.*p-thic*f) 	(-1.*p-thic*f) 	(0.*p+thic*f) 	( 1.*p+thic*f) 	( 2.*p+thic*f) 	( 3.*p+thic*f)  	( 3.*p+ph+thic*f)
-		TERM
-		SR1 YEXT
-				(-3.*p-ph-thic*f)	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		( 3.*p+ph+thic*f)
-				               	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)
-				               	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p-thic*f)	(-1.*p-thic*f)	(-2.*p-thic*f)	(-3.*p-thic*f)	(-3.*p-ph-thic*f)
-				               	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)
-		TERM
-!		SR1 XINT ( 3.*p+ph)		( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	( 3.*p+ph)	( 3.*p+ph)	TERM 
-!		SR1 YINT 0.			( 3.*p+ph)	( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	0.		TERM
-!		SR1 XEXT ( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	( 3.*p+ph+thic)	TERM
-!		SR1 YEXT (-3.*p-ph-thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	TERM
-		SR1 DSCR 0. REGU 4 1. TERM
-	END
-	STRU MACR NAME 'HOUSINGJ' TYPG 'CYLINDER'
-		X 0.		Y 0.
-		MATE 'IN718'	MASF 1.
-		T (twal0)
-		ZMIN (zcbot)    ZMAX (zctop)
-		SR1 XINT	
-				( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)
-				               	( 3.*p)		( 2.*p) 	( 1.*p) 	( 0.*p)	 	(-1.*p) 	(-2.*p) 	(-3.*p)  	(-3.*p-ph-thic*f)
-				               	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)
-				               	(-3.*p-thic*f)	(-2.*p-thic*f) 	(-1.*p-thic*f) 	(0.*p+thic*f) 	( 1.*p+thic*f) 	( 2.*p+thic*f) 	( 3.*p+thic*f)  	( 3.*p+ph+thic*f)
-		TERM
-		SR1 YINT
-				(-3.*p-ph-thic*f)	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		( 3.*p+ph+thic*f)
-				               	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)	( 3.*p+ph+thic*f)
-				               	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p-thic*f)	(-1.*p-thic*f)	(-2.*p-thic*f)	(-3.*p-thic*f)	(-3.*p-ph-thic*f)
-				               	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)	(-3.*p-ph-thic*f)
-		TERM
-		SR1 XEXT	
 				( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)
 				               	( 3.*p)		( 2.*p) 	( 1.*p) 	( 0.*p)	 	(-1.*p) 	(-2.*p) 	(-3.*p)  	(-3.*p-ph-thic)
 				               	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)
@@ -568,12 +531,15 @@ STRU VESSEL
 		SR1 YEXT
 				(-3.*p-ph-thic)	(-3.*p)		(-2.*p)		(-1.*p)		( 0.*p)		( 1.*p)		( 2.*p)		( 3.*p)		( 3.*p+ph+thic)
 				               	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)
-				               	( 3.*p)	        ( 2.*p)	    	( 1.*p)	        ( 0.*p-thic)	(-1.*p-thic)	(-2.*p-thic)	(-3.*p-thic)	(-3.*p-ph-thic)
+				               	( 3.*p)		( 2.*p)		( 1.*p)		( 0.*p-thic)	(-1.*p-thic)	(-2.*p-thic)	(-3.*p-thic)	(-3.*p-ph-thic)
 				               	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)
 		TERM
-		SR1 DSCR 0. REGU 2 1. TERM
+!		SR1 XINT ( 3.*p+ph)		( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	( 3.*p+ph)	( 3.*p+ph)	TERM 
+!		SR1 YINT 0.			( 3.*p+ph)	( 3.*p+ph)	(-3.*p-ph)	(-3.*p-ph)	0.		TERM
+!		SR1 XEXT ( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	( 3.*p+ph+thic)	TERM
+!		SR1 YEXT (-3.*p-ph-thic)	( 3.*p+ph+thic)	( 3.*p+ph+thic)	(-3.*p-ph-thic)	(-3.*p-ph-thic)	TERM
+		SR1 DSCR 0. REGU 4 1. TERM
 	END
-
         STRU MACR NAME 'INSUL' TYPG 'CYLINDER'
  		X 0.		Y 0.
                 MATE 'FFRAX'    MASF 1.
@@ -671,7 +637,6 @@ STRU VESSEL
 
 
 	STRU COND MACR 'HOUSINGI' MACR 'HOUSINGI' END
-	STRU COND MACR 'HOUSINGJ' MACR 'HOUSINGJ' END
 	STRU COND MACR 'INSUL' MACR 'INSUL' END
 	STRU COND MACR 'HOUSINGO' MACR 'HOUSINGO' END
 
@@ -684,8 +649,7 @@ STRU VESSEL
 		STRU COND MACR (WORD('IHRL2-'//CHAR(ihrs[ii]))) FACE 'EXTERNAL' MACR (WORD('IHRL3-'//CHAR(ihrs[ii]))) FACE 'INTERNAL' END	
 		STRU COND MACR (WORD('IHRL3-'//CHAR(ihrs[ii]))) FACE 'EXTERNAL' MACR (WORD('IHRL4-'//CHAR(ihrs[ii]))) FACE 'INTERNAL' END	
 	#enddo
-
-	STRU COND MACR 'HOUSINGI' FACE 'EXTERNAL' MACR 'HOUSINGJ' FACE 'INTERNAL' END
+	
 	STRU COND MACR 'INSUL' FACE 'EXTERNAL' MACR 'HOUSINGO' FACE 'INTERNAL' END
 
 ! Gas gap heat transfer
@@ -696,7 +660,7 @@ STRU VESSEL
 		STRU GAP MACR (WORD('GTCO-'//CHAR(gts[ii]))) FACE 'EXTERNAL' MACR (WORD('GTCL-'//CHAR(gts[ii]))) FACE 'INTERNAL' END
 	#enddo
 
-	STRU GAP MACR 'HOUSINGJ' FACE 'EXTERNAL' MACR 'INSUL' FACE 'INTERNAL' GAS 'N2' PP 1.bar END
+	STRU GAP MACR 'HOUSINGI' FACE 'EXTERNAL' MACR 'INSUL' FACE 'INTERNAL' GAS 'N2' PP 1.bar END
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !		END CONDUCTION
@@ -790,7 +754,7 @@ STRU VESSEL
 			(tend)		(phouse)
 
 		TERM
-		SC1 MACR 'HOUSINGJ' TERM
+		SC1 MACR 'HOUSINGI' TERM
 		SR1 PROF
 			0.000	1.000
 			3.000	1.000
@@ -889,9 +853,9 @@ STRU CONNECTI
 	STAT 'ON'
 	MACR 'HOUSINGO'
 	FACE 'EXTERNAL'
-	CALL './TSHROUD_TIMP_B0-20-17'
-	CALL './TSHROUD_INST_B0-20-17'
-	CALL './TSHROUD_H_B0-20-17'
+	CALL './BC_B0-20-17/TSHROUD_TIMP_B0-20-17'
+	CALL './BC_B0-20-17/TSHROUD_INST_B0-20-17'
+	CALL './BC_B0-20-17/TSHROUD_H_B0-20-17'
 	Z    1.6m
 END
 
@@ -1106,8 +1070,8 @@ STRU VISU
 	STIT "COAL Experiment"
 	XMIN 0.		XMAX (tend)
 	STRU VARI NAME 'TCR56'
-		CALL './time_TCR56_R10'
-		CALL './temp_TCR56_R10'
+		CALL './FoM_B0-20-17/time_TCR56_R10'
+		CALL './FoM_B0-20-17/temp_TCR56_R10'
 	END
 	LABX "time (s)" LABY "T (C)"
 	STRU VARI NAME 'T_IHL310' VARI 'T' MACR 'IHRL3-10' ELEV 1.55m ANGL (1.13rad)
@@ -1115,24 +1079,24 @@ STRU VISU
 		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI NAME 'TCR101'
-		CALL './time_TCR56_R10'
-		CALL './temp_TCR101_R17'
+		CALL './FoM_B0-20-17/time_TCR56_R10'
+		CALL './FoM_B0-20-17/temp_TCR101_R17'
 	END
 	STRU VARI NAME 'T_IHL317' VARI 'T' MACR 'IHRL3-17' ELEV 1.55m ANGL (pi/180.*218.rad)
 		FILEPATH "compvar.path"
 		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI NAME 'TCR122'
-		CALL './time_TCR56_R10'
-		CALL './temp_TCR122_R21'
+		CALL './FoM_B0-20-17/time_TCR56_R10'
+		CALL './FoM_B0-20-17/temp_TCR122_R21'
 	END
 	STRU VARI NAME 'T_IHL321' VARI 'T' MACR 'IHRL3-21' ELEV 1.55m ANGL (pi/180.*60.rad)
 		FILEPATH "compvar.path"
 		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI NAME 'TCR200'
-		CALL './time_TCR56_R10'
-		CALL './temp_TCR200_R34'
+		CALL './FoM_B0-20-17/time_TCR56_R10'
+		CALL './FoM_B0-20-17/temp_TCR200_R34'
 	END
 	STRU VARI NAME 'T_IHL334' VARI 'T' MACR 'IHRL3-34' ELEV 1.55m ANGL (pi/180*57.rad)
 		FILEPATH "compvar.path"
@@ -1205,7 +1169,7 @@ STRU VISU
 	STRU VARI NAME 'GTCO-41' VARI 'T' MACR 'GTCO-41' ELEV 1.55m ANGL (pi/4.)
 		FILEPATH "compvar.path"
 	END
-	STRU VARI NAME 'GTCL-41' VARI 'T' MACR 'GTCL-41' ELEV 1.55m ANGL (pi/4.)
+	STRU VARI NAME 'GTCL-41' VARI 'T' MACR 'GTCL-41' ELEV 1.55m ANGL (pi/180.*15.) 				! Thermocouple TCTG9 was given in a power point presentation, but that elevation is too low, so I use TCTG10.
 		FILEPATH "compvar.path"
 	END
 
@@ -1225,11 +1189,13 @@ STRU VISU
 		NAME "Tmax"
 		TEMPERAT 'MAX'
 		FILEPATH "core_extremum_temperature.path"
+		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI
 		NAME "Tmin"
 		TEMPERAT 'MIN'
 		FILEPATH "core_extremum_temperature.path"
+		UNIT1 1.C	UNIT0 0.C
 	END
 	SFIL (name//"-"//"-extremum-temperature")
 END
@@ -1327,5 +1293,10 @@ END
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-
+STRU SAVE
+	FILE "test_save"
+	FORM 'DIRZIP'
+	SC1 LISTTIME 'TIMA' TERM
+	FREQ 1.s
+END
 

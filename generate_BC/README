@@ -1,0 +1,11 @@
+The BC file's columns correspond to:
+FLMV is the main flow venturi for the inlet flow rate measurement (kg/s)
+KWTS the total power injected in ALL the heated rods in (kW)
+KWSHRD the total power injected in the heaters of the flow housing in (kW)
+PRBTC sensor for the outlet absolute pressure measurement (kPa)
+TFLOW the thermocouple for the inlet water temperature measurement in (C)
+TFSC1 the thermocouple of the water at the begining of the heated length (C)
+TSHROUD the thermocouple of the shroud at the middle of the heated length (C). Note the thermocouples didn't work for B0-XX-YY experiments and a 300C uniform value should be set.
+
+The order is the following:
+TIME    FLMV    KWTS    KWSHRD  PRBTC   TFLOW   TFSC1   TSHROUD 

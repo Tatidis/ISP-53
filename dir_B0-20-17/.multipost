@@ -1,0 +1,12 @@
+STRUCTURE result                          
+FILE1 "/home/andreastatidis/DRACCAR/input_cards/test_cases/dir_B0-20-17/10_naxia_save/"
+FILE2 ""
+FILE3 ""
+FILE4 ""
+PLOT 0
+PLOTVISU 0
+TIME  0.000000000000000E+000
+VISU "/home/andreastatidis/DRACCAR/input_cards/test_cases/dir_B0-20-17/B0-20-17.dat"
+WDIR ""
+status 0
+END
