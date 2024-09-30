@@ -28,7 +28,7 @@
 
 #analyzer							!All paramters taken from the exersices. The parameters will be changed in accordance with the experimental setup of ISP-53.
 
-name = "B0-03-50"
+name = "B0-20-17"
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
@@ -46,7 +46,7 @@ pi = 4.*ATAN(1.)
 
 ! Meshing parameters
 
-	naxia = 8			! number of axial cells 
+	naxia = 5			! number of axial cells 
 	naxgrid = 1			! number of axial cells between grids. This parameter is run with a different option other than the one that uses naxia.
 	ndsca = 1			! 1 azimuthal structure per channel
 	nrods = 46			! this parameter includes: intact heated rods; ballooned heated rods; guide tubes
@@ -187,11 +187,12 @@ pi = 4.*ATAN(1.)
 	poro0 = 0.06				! fuel porosity
 
 	cgap  = 'He'				! gap composition
+	pgap0 = 7.bar				! gap pressure (Pa)
 
 	twal0 = 300.C				! initial temperature of walls (K) 	! This value can be set to room temperature i.e. 300.C.
 
-	pgas0 = 3.bar				! coolant gas pressure (Pa)
-	pgas_out = 3.bar			! outlet BC pressure
+	pgas0 = 20.bar				! coolant gas pressure (Pa)
+	pgas_out = 20.bar			! outlet BC pressure
 
 	tgas0 = 300.C				! coolant gas temperature (K)
 
@@ -207,16 +208,16 @@ pi = 4.*ATAN(1.)
 
 ! Time
 	tini = 0.s				! initial time
-	tstep1 = 112.s				! the time at which the cladding of the central rod at central axial elevation reaches ~300.C simulating 
+	tstep1 = 7.s				! the time at which the cladding of the central rod at central axial elevation reaches ~300.C simulating 
 						! with 5 axial nodes. The elements are heated with dry steam which turn off when this time-stamp is 
 						! reached, and the shroud heating starts.
-	tstep2 = 895.s				! the time at which the shourd reaches ~500.C or ~775.K. This is the time-stamp when the rods' power are
+	tstep2 = 1081.s				! the time at which the shourd reaches ~500.C or ~775.K. This is the time-stamp when the rods' power are
 						! turned on.
-	tstep3 = 939.s				! the time at which the central rod of the bundle reaches ~550.C or 825.K. This is the time when the water
+	tstep3 = 1120.s				! the time at which the central rod of the bundle reaches ~550.C or 825.K. This is the time when the water
 						! injection system is turned on. The computational time greatly increases per in-code second. 
-	tstep4 = 1448.s				! this is when the heating of the shroud and rods  heating area turned off. The water injection system
+	tstep4 = 1500.s				! this is when the heating of the shroud and rods  heating area turned off. The water injection system
 						! turns off abour 60.s after this time-stamp.
-	tstep5 = 1492.s
+	tstep5 = 1605.s
 	tend  = tstep5				! final time
 	dtmin = 0.01s				! minimum macro time step
 	dtmax = 5.s				! maximum macro time step
@@ -705,8 +706,6 @@ STRU VESSEL
 			UNIT 'W'
 			PNOM 1.	
 			SR1 FACT 1. TERM
-			CALL './BC_B0-03-50/KWTS_B0-03-50'
-			%
 			SR1 POWE
 				0.s		0.W					! There are 49 rods in the bundle, three of them are guide tubes, therefore we divide by 46.
 				(tstep2)	0.W					! There are 7 half rods - 6 half intact (or ballooned) heated rods - and one half guide tube
@@ -714,7 +713,6 @@ STRU VESSEL
 				(tstep4+60.s)	(pmax)
 				(tstep4+61.s)	0.W
 			TERM
-			%
 			SC1 MACR (WORD('IHRL2-'//CHAR(ihrs[ii]))) TERM
 			SR1 PROF
 				0.000	0.48
@@ -739,8 +737,6 @@ STRU VESSEL
 				2.799	0.62
 				2.800	0.48
 				3.000	0.48
-				3.001	0.00
-				3.300	0.00
 			TERM
 		END
 	#enddo
@@ -751,8 +747,6 @@ STRU VESSEL
 		UNIT 'W'
 		PNOM 1.
 		SR1 FACT 1. TERM
-		CALL './BC_B0-03-50/KWSHRD_B0-03-50'
-		%
 		SR1 POWE
 			0.s		0.W
 			(tstep1)	0.W
@@ -760,13 +754,10 @@ STRU VESSEL
 			(tend)		(phouse)
 
 		TERM
-		%
 		SC1 MACR 'HOUSINGI' TERM
 		SR1 PROF
 			0.000	1.000
 			3.000	1.000
-			3.001	0.00
-			3.300	0.00
 		TERM
 	END
 
@@ -815,18 +806,14 @@ STRU CONNECTI
 	        (tstep1+1.0)	0.
 	        (tend)  	0.
 	TERM
-	CALL './BC_B0-03-50/FLMV_B0-03-50'
-%
 	SR1 q_m_liq
 	        (tini)		0.
 		(tstep3)	0.
 	        (tstep3+12.)	(qliq)				! According to the ISP-53 Specs, there is a spike far larger than qliq for a few seconds when the water injection commences.
 	        (tend)		(qliq)				! TODO. model this behaviour to see if this phenomenon is necessary to describe the system.
 	TERM
-%
 	P	(pgas0)
-	CALL './BC_B0-03-50/TFSC1_B0-03-50'
-!	T_liq	(tliq0)
+	T_liq	(tliq0)
 	T_gas	(tgas0)
 
 	(ii=0)
@@ -866,9 +853,9 @@ STRU CONNECTI
 	STAT 'ON'
 	MACR 'HOUSINGO'
 	FACE 'EXTERNAL'
-	CALL './BC_B0-03-50/TSHROUD_TIMP_B0-03-50'
-	CALL './BC_B0-03-50/TSHROUD_INST_B0-03-50'
-	CALL './BC_B0-03-50/TSHROUD_H_B0-03-50'
+	CALL './BC_B0-20-17/TSHROUD_TIMP_B0-20-17'
+	CALL './BC_B0-20-17/TSHROUD_INST_B0-20-17'
+	CALL './BC_B0-20-17/TSHROUD_H_B0-20-17'
 	Z    1.6m
 END
 
@@ -1083,8 +1070,8 @@ STRU VISU
 	STIT "COAL Experiment"
 	XMIN 0.		XMAX (tend)
 	STRU VARI NAME 'TCR56'
-		CALL './FoM_B0-03-50/time_TCR56_R10'
-		CALL './FoM_B0-03-50/temp_TCR56_R10'
+		CALL './FoM_B0-20-17/time_TCR56_R10'
+		CALL './FoM_B0-20-17/temp_TCR56_R10'
 	END
 	LABX "time (s)" LABY "T (C)"
 	STRU VARI NAME 'T_IHL310' VARI 'T' MACR 'IHRL3-10' ELEV 1.55m ANGL (1.13rad)
@@ -1092,24 +1079,24 @@ STRU VISU
 		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI NAME 'TCR101'
-		CALL './FoM_B0-03-50/time_TCR56_R10'
-		CALL './FoM_B0-03-50/temp_TCR101_R17'
+		CALL './FoM_B0-20-17/time_TCR56_R10'
+		CALL './FoM_B0-20-17/temp_TCR101_R17'
 	END
 	STRU VARI NAME 'T_IHL317' VARI 'T' MACR 'IHRL3-17' ELEV 1.55m ANGL (pi/180.*218.rad)
 		FILEPATH "compvar.path"
 		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI NAME 'TCR122'
-		CALL './FoM_B0-03-50/time_TCR56_R10'
-		CALL './FoM_B0-03-50/temp_TCR122_R21'
+		CALL './FoM_B0-20-17/time_TCR56_R10'
+		CALL './FoM_B0-20-17/temp_TCR122_R21'
 	END
 	STRU VARI NAME 'T_IHL321' VARI 'T' MACR 'IHRL3-21' ELEV 1.55m ANGL (pi/180.*60.rad)
 		FILEPATH "compvar.path"
 		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI NAME 'TCR200'
-		CALL './FoM_B0-03-50/time_TCR56_R10'
-		CALL './FoM_B0-03-50/temp_TCR200_R34'
+		CALL './FoM_B0-20-17/time_TCR56_R10'
+		CALL './FoM_B0-20-17/temp_TCR200_R34'
 	END
 	STRU VARI NAME 'T_IHL334' VARI 'T' MACR 'IHRL3-34' ELEV 1.55m ANGL (pi/180*57.rad)
 		FILEPATH "compvar.path"
@@ -1202,11 +1189,13 @@ STRU VISU
 		NAME "Tmax"
 		TEMPERAT 'MAX'
 		FILEPATH "core_extremum_temperature.path"
+		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI
 		NAME "Tmin"
 		TEMPERAT 'MIN'
 		FILEPATH "core_extremum_temperature.path"
+		UNIT1 1.C	UNIT0 0.C
 	END
 	SFIL (name//"-"//"-extremum-temperature")
 END

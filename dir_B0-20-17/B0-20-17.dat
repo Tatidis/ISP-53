@@ -211,16 +211,16 @@ pi = 4.*ATAN(1.)
 	tstep1 = 7.s				! the time at which the cladding of the central rod at central axial elevation reaches ~300.C simulating 
 						! with 5 axial nodes. The elements are heated with dry steam which turn off when this time-stamp is 
 						! reached, and the shroud heating starts.
-	tstep2 = 1081.s				! the time at which the shourd reaches ~500.C or ~775.K. This is the time-stamp when the rods' power are
+	tstep2 = 1080.s				! the time at which the shourd reaches ~500.C or ~775.K. This is the time-stamp when the rods' power are
 						! turned on.
-	tstep3 = 1120.s				! the time at which the central rod of the bundle reaches ~550.C or 825.K. This is the time when the water
+	tstep3 = 1132.s				! the time at which the central rod of the bundle reaches ~550.C or 825.K. This is the time when the water
 						! injection system is turned on. The computational time greatly increases per in-code second. 
 	tstep4 = 1500.s				! this is when the heating of the shroud and rods  heating area turned off. The water injection system
 						! turns off abour 60.s after this time-stamp.
 	tstep5 = 1605.s
 	tend  = tstep5				! final time
 	dtmin = 0.01s				! minimum macro time step
-	dtmax = 5.s				! maximum macro time step
+	dtmax = 2.s				! maximum macro time step
 	tsis  = tstep3				! time to switch from gas to liquid coolant flow rate
 
 ! Power
@@ -452,7 +452,7 @@ STRU VESSEL
 		NAME 'IHRL4-1'
 		TYPG 'CYLINDER'
 		DSCA 1
-		SR1 DSCR 0. 1. TERM
+		SR1 DSCR 0. 0.5 1. TERM
 		ZMIN (zihrl4b)	ZMAX (zihrl4t)
 		DINT (dihr4)	DEXT (dihr5)
 		MATE 'HASTELLO'	MASF 1.
@@ -706,6 +706,8 @@ STRU VESSEL
 			UNIT 'W'
 			PNOM 1.	
 			SR1 FACT 1. TERM
+			CALL './BC_B0-20-17/KWTS_B0-20-17'
+			%
 			SR1 POWE
 				0.s		0.W					! There are 49 rods in the bundle, three of them are guide tubes, therefore we divide by 46.
 				(tstep2)	0.W					! There are 7 half rods - 6 half intact (or ballooned) heated rods - and one half guide tube
@@ -713,6 +715,7 @@ STRU VESSEL
 				(tstep4+60.s)	(pmax)
 				(tstep4+61.s)	0.W
 			TERM
+			%
 			SC1 MACR (WORD('IHRL2-'//CHAR(ihrs[ii]))) TERM
 			SR1 PROF
 				0.000	0.48
@@ -737,6 +740,8 @@ STRU VESSEL
 				2.799	0.62
 				2.800	0.48
 				3.000	0.48
+				3.001	0.00
+				3.300	0.00
 			TERM
 		END
 	#enddo
@@ -747,6 +752,8 @@ STRU VESSEL
 		UNIT 'W'
 		PNOM 1.
 		SR1 FACT 1. TERM
+		CALL './BC_B0-20-17/KWSHRD_B0-20-17'
+		%
 		SR1 POWE
 			0.s		0.W
 			(tstep1)	0.W
@@ -754,10 +761,13 @@ STRU VESSEL
 			(tend)		(phouse)
 
 		TERM
+		%
 		SC1 MACR 'HOUSINGI' TERM
 		SR1 PROF
 			0.000	1.000
 			3.000	1.000
+			3.001	0.00
+			3.300	0.00
 		TERM
 	END
 
@@ -806,14 +816,18 @@ STRU CONNECTI
 	        (tstep1+1.0)	0.
 	        (tend)  	0.
 	TERM
+	CALL './BC_B0-20-17/FLMV_B0-20-17'
+%
 	SR1 q_m_liq
 	        (tini)		0.
 		(tstep3)	0.
 	        (tstep3+12.)	(qliq)				! According to the ISP-53 Specs, there is a spike far larger than qliq for a few seconds when the water injection commences.
 	        (tend)		(qliq)				! TODO. model this behaviour to see if this phenomenon is necessary to describe the system.
 	TERM
+%
 	P	(pgas0)
-	T_liq	(tliq0)
+	CALL './BC_B0-20-17/TFSC1_B0-20-17'
+!	T_liq	(tliq0)
 	T_gas	(tgas0)
 
 	(ii=0)
@@ -1189,13 +1203,11 @@ STRU VISU
 		NAME "Tmax"
 		TEMPERAT 'MAX'
 		FILEPATH "core_extremum_temperature.path"
-		UNIT1 1.C	UNIT0 0.C
 	END
 	STRU VARI
 		NAME "Tmin"
 		TEMPERAT 'MIN'
 		FILEPATH "core_extremum_temperature.path"
-		UNIT1 1.C	UNIT0 0.C
 	END
 	SFIL (name//"-"//"-extremum-temperature")
 END
