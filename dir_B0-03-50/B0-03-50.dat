@@ -203,7 +203,7 @@ pi = 4.*ATAN(1.)
 	hbct = 50000.W/m2/K			! external housing heat transfer coefficient (W/m2/K)
 
 	qgas = 150.g/s				! coolant gas flow rate
-	qliq = 89.g/s				! coolant liquid flow rate
+	qliq = 269.g/s				! coolant liquid flow rate
 
 ! Time
 	tini = 0.s				! initial time
